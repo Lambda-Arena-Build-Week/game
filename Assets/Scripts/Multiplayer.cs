@@ -8,7 +8,6 @@ using WebSocketSharp;
 
 public class Multiplayer : MonoBehaviour
 {
-
 #if UNITY_WEBGL && !UNITY_EDITOR
     [DllImport("__Internal")]
     private static extern void WebSocketInit(string url);
@@ -23,6 +22,7 @@ public class Multiplayer : MonoBehaviour
 #if !UNITY_WEBGL || UNITY_EDITOR
     WebSocket ws;
 #endif
+
     public Player player;
     public Dictionary<int, Player> players = new Dictionary<int, Player>();
     public int id;
@@ -91,14 +91,12 @@ public class Multiplayer : MonoBehaviour
         message.rotation = player.rigid.transform.rotation;
         string json = JsonUtility.ToJson(message);
 
-
         this.Send(json);
     }
 
     public void Send(string data)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        
         WebSocketSend(data);
 #else
         ws.Send(data);
@@ -115,8 +113,6 @@ public class Multiplayer : MonoBehaviour
                 {
                     if (players.ContainsKey(messageQueue[i].id) || messageQueue[i].id == this.id)
                         break;
-
-                   
 
                     GameObject newPlayer = (GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
                     Player playerScript = newPlayer.GetComponent<Player>();
@@ -146,13 +142,13 @@ public class Multiplayer : MonoBehaviour
                 {
                     Destroy(players[messageQueue[i].id]);
                 }
-
             }
 
             messageQueue.Clear();
             yield return null;
         }
     }
+
     public void OnMessage(string message)
     {
         Message msg = (Message)JsonUtility.FromJson(message, typeof(Message));
@@ -162,8 +158,6 @@ public class Multiplayer : MonoBehaviour
 
         if (msg.message == "playerupdate")
         {
-
-
             if (players.ContainsKey(msg.id))
             {
                 msg.message = "playerupdate";
@@ -173,7 +167,6 @@ public class Multiplayer : MonoBehaviour
             {
                 msg.message = "playerspawn";
                 messageQueue.Add(msg);
-
             }
         }
         else

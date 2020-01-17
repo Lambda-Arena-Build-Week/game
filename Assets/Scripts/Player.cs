@@ -60,8 +60,6 @@ public class Player : MonoBehaviour
             this.weapon.transform.rotation = this.weaponMount.rotation;
             this.weapon.transform.parent = this.weaponMount;
         }
-
-
      }
 
     private void GetMaterials()
@@ -106,7 +104,6 @@ public class Player : MonoBehaviour
             this.resolution *= 0.5f;
 
             moveDirection = Vector3.zero;
-
 
             Vector2 stickMove = Vector2.zero;
 
@@ -186,7 +183,6 @@ public class Player : MonoBehaviour
 
         this.rigid.velocity = Vector3.zero;
         this.rigid.angularVelocity = Vector3.zero;
-
 
         this.position = this.rigid.position;
         this.rotation = this.rigid.rotation;

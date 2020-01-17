@@ -13,7 +13,6 @@ public class Dungeon : MonoBehaviour
 {
     List<GameObject> dungeonPieces = new List<GameObject>();
 
-    // Start is called before the first frame update
     void Start()
     {
         CreateRoom(Vector3.zero, new Vector2(15.0f, 15.0f));
@@ -34,7 +33,6 @@ public class Dungeon : MonoBehaviour
 
     private void CreateRoom(Vector3 position, Vector2 roomSize)
     {
-
         WallPieces wallPieces = WallPieces.WALL_DOOR;
         GameObject wallPieceTop = GetWallPiece(wallPieces);
         GameObject wallPieceBottom = GetWallPiece(wallPieces);
@@ -56,8 +54,5 @@ public class Dungeon : MonoBehaviour
 
         dungeonPieces.Add(wallPieceLeft);
         dungeonPieces.Add(wallPieceRight);
-
-
     }
-
 }
