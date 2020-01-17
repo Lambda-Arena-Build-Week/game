@@ -120,6 +120,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &11683410 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 576b3520da5644fcd8949cf278ed64f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 478032391}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &132610876 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100022, guid: 576b3520da5644fcd8949cf278ed64f6,
@@ -318,7 +324,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &243250003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,8 +558,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d0926f43408847cda6b5901639eb5f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  menuPlayer: {fileID: 0}
+  player: {fileID: 1856688154}
+  menuPlayer: {fileID: 568664649}
   pantsColor: {r: 0, g: 0.047058824, b: 0.69803923, a: 1}
   hairColor: {r: 0.37254903, g: 0.007843138, b: 0.007843138, a: 1}
   shirtColor: {r: 0.8509804, g: 0.15294118, b: 0, a: 1}
@@ -1599,11 +1605,11 @@ MonoBehaviour:
   shirtColor: {r: 0.8509804, g: 0.15294118, b: 0, a: 1}
   shoesColor: {r: 0.39607844, g: 0.06666667, b: 0.023529412, a: 1}
   skinColor: {r: 0.85882354, g: 0.67058825, b: 0.49019608, a: 1}
-  playerRenderer: {fileID: 1691742807}
   animator: {fileID: 568664651}
   ragdollController: {fileID: 626256827}
   dead: 0
   isMenu: 1
+  model: {fileID: 11683410}
   rigid: {fileID: 568664650}
   weapon: {fileID: 0}
   weaponScript: {fileID: 0}
@@ -1625,7 +1631,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 1
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!95 &568664651 stripped
@@ -4875,12 +4881,6 @@ CapsuleCollider:
   m_Height: 0.0014106899
   m_Direction: 1
   m_Center: {x: 0, y: 0.00070534495, z: 0.0001}
---- !u!137 &1691742807 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 13700000, guid: 576b3520da5644fcd8949cf278ed64f6,
-    type: 3}
-  m_PrefabInstance: {fileID: 478032391}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1760665786
 GameObject:
   m_ObjectHideFlags: 0
@@ -4959,6 +4959,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1760665786}
   m_CullTransparentMesh: 0
+--- !u!1 &1784719746 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 576b3520da5644fcd8949cf278ed64f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1926726149}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1830504445
 GameObject:
   m_ObjectHideFlags: 0
@@ -5041,11 +5047,11 @@ MonoBehaviour:
   shirtColor: {r: 0.8509804, g: 0.15294118, b: 0, a: 1}
   shoesColor: {r: 0.39607844, g: 0.06666667, b: 0.023529412, a: 1}
   skinColor: {r: 0.85882354, g: 0.67058825, b: 0.49019608, a: 1}
-  playerRenderer: {fileID: 2133269571}
   animator: {fileID: 1856688156}
   ragdollController: {fileID: 1097308199}
   dead: 0
   isMenu: 1
+  model: {fileID: 1784719746}
   rigid: {fileID: 1856688155}
   weapon: {fileID: 0}
   weaponScript: {fileID: 0}
@@ -5306,6 +5312,58 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 576b3520da5644fcd8949cf278ed64f6, type: 3}
+--- !u!1 &1961069577
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1961069579}
+  - component: {fileID: 1961069578}
+  m_Layer: 0
+  m_Name: Ammo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1961069578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961069577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f21b5aee3e787423a98d4f1ca531cd37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoPrefab: Projectile
+  playerId: 0
+  numberOfRounds: 12
+  damagePerRound: 5
+  fireRate: 0.5
+  spreadAngle: 5
+  roundLifetime: 2
+  coolDownTime: 1
+  rounds: []
+--- !u!4 &1961069579
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961069577}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.66800183, y: 0.48101968, z: 20004.562}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2000256578
 GameObject:
   m_ObjectHideFlags: 0
@@ -5445,12 +5503,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6199692298750519597, guid: 095d9cd9c3b494f219f543c312888ec0,
     type: 3}
   m_PrefabInstance: {fileID: 5392709769516435170}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &2133269571 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 13700000, guid: 576b3520da5644fcd8949cf278ed64f6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1926726149}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2146339068
 GameObject:

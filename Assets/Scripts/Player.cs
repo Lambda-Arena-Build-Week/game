@@ -24,15 +24,13 @@ public class Player : MonoBehaviour
     public Color shoesColor = new Color(101.0f / 255.0f, 17.0f / 255.0f, 6.0f / 255.0f);
     public Color skinColor = new Color(219.0f / 255.0f, 171.0f / 255.0f, 125.0f / 255.0f);
 
-    public Renderer playerRenderer;
-
     public Animator animator;
 
     public RagdollController ragdollController;
     public bool dead = false;
 
     public bool isMenu = false;
-
+    public GameObject model;
     private Dictionary<string, Material> materials = new Dictionary<string, Material>();
     public Rigidbody rigid;
 
@@ -64,9 +62,10 @@ public class Player : MonoBehaviour
 
     private void GetMaterials()
     {
+        Renderer playerRenderer = this.model.GetComponent<Renderer>();
         if (this.materials.Count == 0)
         {
-            Material[] mats = this.playerRenderer.materials;
+            Material[] mats =  playerRenderer.materials;
             char[] spearator = { ' ' };
             for (int i = 0; i < mats.Length; i++)
             {
