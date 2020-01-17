@@ -1891,15 +1891,15 @@ MonoBehaviour:
   shirtColor: {r: 0.8509804, g: 0.15294118, b: 0, a: 1}
   shoesColor: {r: 0.39607844, g: 0.06666667, b: 0.023529412, a: 1}
   skinColor: {r: 0.85882354, g: 0.67058825, b: 0.49019608, a: 1}
-  playerRenderer: {fileID: 3618177678513486434}
   animator: {fileID: 3618177678517650594}
   ragdollController: {fileID: 2131474570264897175}
   dead: 0
   isMenu: 1
+  model: {fileID: 3618177678527149922}
   rigid: {fileID: -7212805604123193251}
   weapon: {fileID: 0}
   weaponScript: {fileID: 0}
-  weaponMount: {fileID: 0}
+  weaponMount: {fileID: 1721387259718831951}
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
   id: 0
