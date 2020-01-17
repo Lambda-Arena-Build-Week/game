@@ -95,104 +95,133 @@ public class Player : MonoBehaviour
         this.materials["skin"].color = this.skinColor;
     }
 
+    private void DoMovement()
+    {
+        moveDirection = Vector3.zero;
+
+        Vector2 stickMove = Vector2.zero;
+
+        if (Gamepad.current != null)
+            stickMove = Gamepad.current.leftStick.ReadValue();
+
+        if (stickMove != Vector2.zero)
+            this.moveDirection = new Vector3(stickMove.x, 0.0f, stickMove.y);
+        else
+        {
+            if (Input.GetKey(KeyCode.A))
+                this.moveDirection += Vector3.left;
+
+            if (Input.GetKey(KeyCode.D))
+                this.moveDirection += Vector3.right;
+
+            if (Input.GetKey(KeyCode.W))
+                this.moveDirection += Vector3.forward;
+
+            if (Input.GetKey(KeyCode.S))
+                this.moveDirection += Vector3.back;
+        }
+        this.moveDirection.Normalize();
+    }
+
+    private void DoLook()
+    {
+
+        Vector2 stickLook = Vector2.zero;
+
+        if (stickLook == Vector2.zero && !usedController)
+        {
+            float mouseX = Input.mousePosition.x - this.resolution.x;
+            float mouseY = Input.mousePosition.y - this.resolution.y;
+            targetPos = new Vector3(mouseX, rigid.position.y, mouseY);
+        }
+        else
+        {
+            usedController = true;
+            targetPos = this.rigid.position + new Vector3(stickLook.x, 0.0f, stickLook.y);
+        }
+
+        if (Gamepad.current != null)
+            stickLook = Gamepad.current.rightStick.ReadValue();
+    }
+
+    private void DoWeapon()
+    {
+        if (this.weaponScript)
+        {
+            bool gamepadFire = false;
+            if (Gamepad.current != null)
+                gamepadFire = Gamepad.current.rightTrigger.isPressed;
+
+            if (gamepadFire || Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
+                this.weaponScript.Fire(true);
+            else
+                this.weaponScript.Fire(false);
+        }
+    }
+
+    private void KillPlayer()
+    {
+        this.animSpeed = 0.0f;
+        this.animator.SetFloat("speed", 0.0f);
+        this.ragdollController.TurnRagdollOn();
+        this.dead = true;
+        this.animator.enabled = false;
+    }
+
+    public void Update()
+    {
+        if (!this.dead && !this.isMenu && this.isControlled)
+        {
+            this.DoMovement();
+            this.DoLook();
+            this.DoWeapon();
+
+            if (this.health <= 0 && !this.dead)
+                this.KillPlayer();
+        }
+    }
+
+    private void ApplyMovement()
+    {
+        this.resolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
+        this.resolution *= 0.5f;
+
+        this.rigid.MovePosition(this.rigid.position + ((moveDirection * moveSpeed) * Time.deltaTime));
+
+        this.rigid.transform.LookAt(targetPos);
+    }
+
+    private void ApplyAnimation()
+    {
+        if (this.moveDirection != Vector3.zero)
+        {
+            this.animSpeed = 1.0f;
+            this.animator.SetFloat("speed", 1.0f);
+        }
+        else
+        {
+            this.animSpeed = 0.0f;
+            this.animator.SetFloat("speed", 0.0f);
+        }
+    }
+
+    private void ClearVelocities()
+    {
+        this.rigid.velocity = Vector3.zero;
+        this.rigid.angularVelocity = Vector3.zero;
+    }
+
     private void FixedUpdate()
     {
         if (!this.dead && !this.isMenu && this.isControlled)
         {
-            this.resolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
-            this.resolution *= 0.5f;
-
-            moveDirection = Vector3.zero;
-
-            Vector2 stickMove = Vector2.zero;
-
-            if (Gamepad.current != null)
-                stickMove = Gamepad.current.leftStick.ReadValue();
-
-            if (stickMove != Vector2.zero)
-                this.moveDirection = new Vector3(stickMove.x, 0.0f, stickMove.y);
-            else
-            {
-                if (Input.GetKey(KeyCode.A))
-                    this.moveDirection += Vector3.left;
-
-                if (Input.GetKey(KeyCode.D))
-                    this.moveDirection += Vector3.right;
-
-                if (Input.GetKey(KeyCode.W))
-                    this.moveDirection += Vector3.forward;
-
-                if (Input.GetKey(KeyCode.S))
-                    this.moveDirection += Vector3.back;
-            }
-            this.moveDirection.Normalize();
-
-            this.rigid.MovePosition(this.rigid.position + ((moveDirection * moveSpeed) * Time.deltaTime));
-
-            Vector2 stickLook = Vector2.zero;
-
-            if (Gamepad.current != null)
-                stickLook = Gamepad.current.rightStick.ReadValue();
-
-            if (stickLook == Vector2.zero && !usedController)
-            {
-                float mouseX = Input.mousePosition.x - this.resolution.x;
-                float mouseY = Input.mousePosition.y - this.resolution.y;
-                targetPos = new Vector3(mouseX, rigid.position.y, mouseY);
-            }
-            else
-            {
-                usedController = true;
-                targetPos = this.rigid.position + new Vector3(stickLook.x, 0.0f, stickLook.y);
-            }
-
-            this.rigid.transform.LookAt(targetPos);
-
-            if (this.weaponScript)
-            {
-                bool gamepadFire = false;
-                if (Gamepad.current != null)
-                    gamepadFire = Gamepad.current.rightTrigger.isPressed;
-
-                if (gamepadFire || Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0))
-                    this.weaponScript.Fire(true);
-                else
-                    this.weaponScript.Fire(false);
-            }
-
-            if (this.moveDirection != Vector3.zero)
-            {
-                this.animSpeed = 1.0f;
-                this.animator.SetFloat("speed", 1.0f);
-            }
-            else
-            {
-                this.animSpeed = 0.0f;
-                this.animator.SetFloat("speed", 0.0f);
-            }
-            if (this.health <= 0 && !this.dead)
-            {
-                this.animSpeed = 0.0f;
-                this.animator.SetFloat("speed", 0.0f);
-                this.ragdollController.TurnRagdollOn();
-                this.dead = true;
-                this.animator.enabled = false;
-            }
+            this.ApplyMovement();
+            this.ApplyAnimation();
         }
 
-        this.rigid.velocity = Vector3.zero;
-        this.rigid.angularVelocity = Vector3.zero;
+        this.ClearVelocities();
 
         this.position = this.rigid.position;
         this.rotation = this.rigid.rotation;
-    }
-
-    private void DoDamage(GameObject gunParticle)
-    {
-        if (gunParticle.name == "ShortgunParticle")
-        {
-            health -= 5;
-            gunParticle.SetActive(false);
-        }
     }
 }
