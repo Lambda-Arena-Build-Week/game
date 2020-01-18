@@ -87,8 +87,10 @@ public class Ammo : MonoBehaviour
                         this.spread = Mathf.Clamp(this.spread, -this.spreadAngle, this.spreadAngle);
                         this.flipSpread = false;
                     }
+
                     projectile.transform.Rotate(new Vector3(0.0f, this.spread, 0.0f));
 
+                    this.fireTimer = 0.0f;
                     projectile.gameObject.SetActive(true);
                     projectile.rigid.AddForce(projectile.rigid.transform.forward * this.projectileForce, ForceMode.Impulse);
 

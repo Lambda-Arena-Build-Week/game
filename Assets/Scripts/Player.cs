@@ -129,6 +129,9 @@ public class Player : MonoBehaviour
 
         Vector2 stickLook = Vector2.zero;
 
+        if (Gamepad.current != null)
+            stickLook = Gamepad.current.rightStick.ReadValue();
+
         if (stickLook == Vector2.zero && !usedController)
         {
             float mouseX = Input.mousePosition.x - this.resolution.x;
@@ -140,9 +143,6 @@ public class Player : MonoBehaviour
             usedController = true;
             targetPos = this.rigid.position + new Vector3(stickLook.x, 0.0f, stickLook.y);
         }
-
-        if (Gamepad.current != null)
-            stickLook = Gamepad.current.rightStick.ReadValue();
     }
 
     // Poll input and fire weapon
