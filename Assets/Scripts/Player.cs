@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
-using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Utilities;
 
 [Serializable]
 public class Player : MonoBehaviour
@@ -54,12 +49,14 @@ public class Player : MonoBehaviour
         {
             this.weapon = (GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/Weapons/Shotgun"));
             this.weaponScript = this.weapon.GetComponent<Weapon>();
+            this.weaponScript.playerId = this.id;
             this.weapon.transform.position = this.weaponMount.position;
             this.weapon.transform.rotation = this.weaponMount.rotation;
             this.weapon.transform.parent = this.weaponMount;
         }
      }
 
+    // Get all the materials in the renderer for use in changing player's colors
     private void GetMaterials()
     {
         Renderer playerRenderer = this.model.GetComponent<Renderer>();
@@ -77,6 +74,7 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
+        //this.ragdollController.TurnRagdollOff();
         this.animator.enabled = true;
         this.animator.SetFloat("speed", 0.0f);
         this.animSpeed = 0.0f;
@@ -86,6 +84,7 @@ public class Player : MonoBehaviour
         this.ChangeColors();
     }
 
+    // Sets player's colors
     public void ChangeColors()
     {
         this.materials["pants"].color = this.pantsColor;
@@ -95,6 +94,7 @@ public class Player : MonoBehaviour
         this.materials["skin"].color = this.skinColor;
     }
 
+    // Poll input and update player's movement vector
     private void DoMovement()
     {
         moveDirection = Vector3.zero;
@@ -123,6 +123,7 @@ public class Player : MonoBehaviour
         this.moveDirection.Normalize();
     }
 
+    // Poll input and update player's look direction
     private void DoLook()
     {
 
@@ -144,6 +145,7 @@ public class Player : MonoBehaviour
             stickLook = Gamepad.current.rightStick.ReadValue();
     }
 
+    // Poll input and fire weapon
     private void DoWeapon()
     {
         if (this.weaponScript)
@@ -159,6 +161,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Kills player. Turns off animation and enables ragdoll physics
     private void KillPlayer()
     {
         this.animSpeed = 0.0f;
@@ -181,6 +184,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Applies players movement and look direction
     private void ApplyMovement()
     {
         this.resolution = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
@@ -191,6 +195,7 @@ public class Player : MonoBehaviour
         this.rigid.transform.LookAt(targetPos);
     }
 
+    // Applies animation based on player movement
     private void ApplyAnimation()
     {
         if (this.moveDirection != Vector3.zero)
@@ -205,6 +210,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Clears rigid body velocites since they are not needed
     private void ClearVelocities()
     {
         this.rigid.velocity = Vector3.zero;

@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     public int damageDone;
     public float roundLifetime;
 
-    private Rigidbody rigid = null;
+    public Rigidbody rigid = null;
     private float lifetimeTimer = 0.0f;
 
     private void OnEnable()
