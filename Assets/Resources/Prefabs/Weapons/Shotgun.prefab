@@ -78,8 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireRate: 1
   fireSpawn: {fileID: 7027848495461231965}
-  particles: []
-  gunParticle: ShotgunParticle
+  playerId: 0
   ammo: {fileID: 9008210224598412526}
 --- !u!1001 &812802206967070607
 PrefabInstance:
@@ -245,14 +244,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5963008911563945586, guid: a2660ef4a226c4f5eb533aa37053b757,
         type: 3}
-      propertyPath: spawnPoint
-      value: 
-      objectReference: {fileID: 7027848495461231965}
+      propertyPath: fireRate
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 5963008911563945586, guid: a2660ef4a226c4f5eb533aa37053b757,
         type: 3}
       propertyPath: spreadAngle
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5963008911563945586, guid: a2660ef4a226c4f5eb533aa37053b757,
+        type: 3}
+      propertyPath: spawnPoint
+      value: 
+      objectReference: {fileID: 7027848495461231965}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2660ef4a226c4f5eb533aa37053b757, type: 3}
 --- !u!4 &9008210224598412527 stripped

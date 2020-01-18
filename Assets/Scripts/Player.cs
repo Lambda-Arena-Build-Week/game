@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
 
     public RagdollController ragdollController;
     public bool dead = false;
-
+    public Collider capsuleCollider;
     public bool isMenu = false;
     public GameObject model;
     private Dictionary<string, Material> materials = new Dictionary<string, Material>();
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        //this.ragdollController.TurnRagdollOff();
+        this.capsuleCollider.enabled = true;
         this.animator.enabled = true;
         this.animator.SetFloat("speed", 0.0f);
         this.animSpeed = 0.0f;
@@ -169,6 +169,7 @@ public class Player : MonoBehaviour
         this.ragdollController.TurnRagdollOn();
         this.dead = true;
         this.animator.enabled = false;
+        this.capsuleCollider.enabled = false;
     }
 
     public void Update()
@@ -179,9 +180,11 @@ public class Player : MonoBehaviour
             this.DoLook();
             this.DoWeapon();
 
-            if (this.health <= 0 && !this.dead)
-                this.KillPlayer();
+      
         }
+
+        if (this.health <= 0 && !this.dead)
+            this.KillPlayer();
     }
 
     // Applies players movement and look direction

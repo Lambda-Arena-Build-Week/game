@@ -24,6 +24,7 @@ public class Ammo : MonoBehaviour
     private float spawnRate;
     private int roundsFired = 0;
     private float spread = 0.0f;
+    private bool flipSpread = false;
 
     void Start()
     {
@@ -74,9 +75,18 @@ public class Ammo : MonoBehaviour
                     projectile.gameObject.transform.position = this.spawnPoint.position;
                     projectile.gameObject.transform.rotation = this.spawnPoint.rotation;
 
-                    this.spread += Random.Range(-this.spreadAngle, this.spreadAngle);
-                    this.spread = Mathf.Clamp(this.spread, -this.spreadAngle, this.spreadAngle);
-
+                    if (!this.flipSpread)
+                    {
+                        this.spread += Random.Range(-this.spreadAngle, this.spreadAngle);
+                        this.spread = Mathf.Clamp(this.spread, -this.spreadAngle, this.spreadAngle);
+                        this.flipSpread = true;
+                    }
+                    else
+                    {
+                        this.spread *= -1.0f;
+                        this.spread = Mathf.Clamp(this.spread, -this.spreadAngle, this.spreadAngle);
+                        this.flipSpread = false;
+                    }
                     projectile.transform.Rotate(new Vector3(0.0f, this.spread, 0.0f));
 
                     projectile.gameObject.SetActive(true);

@@ -1894,6 +1894,7 @@ MonoBehaviour:
   animator: {fileID: 3618177678517650594}
   ragdollController: {fileID: 2131474570264897175}
   dead: 0
+  capsuleCollider: {fileID: 6889537575998353682}
   isMenu: 1
   model: {fileID: 3618177678527149922}
   rigid: {fileID: -7212805604123193251}
