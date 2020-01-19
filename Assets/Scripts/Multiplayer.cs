@@ -20,25 +20,22 @@ public class Multiplayer : MonoBehaviour
 #endif
 
 #if !UNITY_WEBGL || UNITY_EDITOR
-    WebSocket ws;
+    private WebSocket ws;
 #endif
 
     public static Multiplayer instance = null;
-
     public Player player;
     public bool connected = false;
     public Dictionary<int, Player> players = new Dictionary<int, Player>();
     public int id;
-    private List<Message> messageQueue = new List<Message>();
- 
 
+    private List<Message> messageQueue = new List<Message>();
     private bool processMessages = true;
 
     private void OnEnable()
     {
         if (instance == null)
             instance = this;
-
 
         this.player.isMenu = false;
         this.connected = false;
@@ -52,10 +49,8 @@ public class Multiplayer : MonoBehaviour
 
         ws.OnOpen += (sender, e) =>
         {
-
             Debug.Log("Connected");
             this.connected = true;
-
         };
 
         ws.OnError += (sender, e) =>
@@ -71,7 +66,6 @@ public class Multiplayer : MonoBehaviour
         ws.OnMessage += (sender, e) =>
         {
             this.OnMessage(e.Data);
-
         };
 
         ws.Connect();
@@ -164,6 +158,7 @@ public class Multiplayer : MonoBehaviour
             yield return null;
         }
     }
+
     public void OnConnect()
     {
         this.connected = true;
@@ -209,9 +204,6 @@ public class Multiplayer : MonoBehaviour
         if (msg.message == "roundfired" && msg.shooterid != this.id)
             messageQueue.Add(msg);
     }
-
- 
-
 
     public void FireRound(int playerId, float roundLifetime, int damagePerRound, Vector3 position, Quaternion rotation, float force, bool send)
     {

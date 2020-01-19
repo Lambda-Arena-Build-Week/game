@@ -7,8 +7,8 @@ public class Projectile : MonoBehaviour
     public int playerId;
     public int damageDone;
     public float roundLifetime;
-
     public Rigidbody rigid = null;
+
     private float lifetimeTimer = 0.0f;
 
     private void OnEnable()
@@ -41,7 +41,5 @@ public class Projectile : MonoBehaviour
 
         if (player == null)
             this.DisableProjectile();
-
-
     }
 }

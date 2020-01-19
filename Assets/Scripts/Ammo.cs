@@ -63,7 +63,6 @@ public class Ammo : MonoBehaviour
             this.roundsFired = this.numberOfRounds;
         else
             this.roundsFired++;
-
     }
 
     private void SingleShot()
@@ -81,7 +80,6 @@ public class Ammo : MonoBehaviour
 
         if (this.fireTimer >= this.spawnRate)
         {
-
             this.CreateProjectile();
 
             if (this.roundsFired >= this.numberOfRounds)

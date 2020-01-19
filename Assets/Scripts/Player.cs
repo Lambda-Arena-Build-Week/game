@@ -6,42 +6,37 @@ using UnityEngine.InputSystem;
 [Serializable]
 public class Player : MonoBehaviour
 {
+    public int id;
     public bool isControlled = false;
     public float moveSpeed = 5.0f;
     public float turnSpeed = 10.0f;
-
     public string playerName;
     public int health = 100;
-
     public Color pantsColor = new Color(0.0f / 255.0f, 12.0f / 255.0f, 178.0f / 255.0f);
     public Color hairColor = new Color(95.0f / 255.0f, 2.0f / 255.0f, 2.0f / 255.0f);
     public Color shirtColor = new Color(217.0f / 255.0f, 39.0f / 255.0f, 0.0f / 255.0f);
     public Color shoesColor = new Color(101.0f / 255.0f, 17.0f / 255.0f, 6.0f / 255.0f);
     public Color skinColor = new Color(219.0f / 255.0f, 171.0f / 255.0f, 125.0f / 255.0f);
-
     public Animator animator;
-
     public RagdollController ragdollController;
     public bool dead = false;
     public Collider capsuleCollider;
     public bool isMenu = false;
     public GameObject model;
-    private Dictionary<string, Material> materials = new Dictionary<string, Material>();
     public Rigidbody rigid;
-
-    private Vector3 moveDirection = Vector3.zero;
-
-    private Vector2 resolution;
-    private bool usedController = false;
-    private Vector3 targetPos;
-
     public GameObject weapon;
     public Weapon weaponScript;
     public Transform weaponMount;
     public Vector3 position;
     public Quaternion rotation;
-    public int id;
     public float animSpeed = 0.0f;
+
+    private Dictionary<string, Material> materials = new Dictionary<string, Material>();
+    private Vector3 moveDirection = Vector3.zero;
+    private Vector2 resolution;
+    private bool usedController = false;
+    private Vector3 targetPos;
+    private int floorLayer;
 
     private void Start()
     {
@@ -74,6 +69,7 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
+        this.floorLayer = LayerMask.GetMask("Floor");
         this.capsuleCollider.enabled = true;
         this.animator.enabled = true;
         this.animator.SetFloat("speed", 0.0f);
@@ -126,7 +122,6 @@ public class Player : MonoBehaviour
     // Poll input and update player's look direction
     private void DoLook()
     {
-
         Vector2 stickLook = Vector2.zero;
 
         if (Gamepad.current != null)
@@ -134,9 +129,17 @@ public class Player : MonoBehaviour
 
         if (stickLook == Vector2.zero && !usedController)
         {
-            float mouseX = Input.mousePosition.x - this.resolution.x;
-            float mouseY = Input.mousePosition.y - this.resolution.y;
-            targetPos = new Vector3(mouseX, rigid.position.y, mouseY);
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit, 200.0f, this.floorLayer))
+            {
+                Vector3 currentPos = this.rigid.transform.position;
+                Vector3 hitPoint = hit.point;
+                hitPoint.y = currentPos.y;
+
+                targetPos = Vector3.Normalize(hitPoint - currentPos) + this.rigid.position;
+            }
         }
         else
         {
@@ -179,8 +182,6 @@ public class Player : MonoBehaviour
             this.DoMovement();
             this.DoLook();
             this.DoWeapon();
-
-      
         }
 
         if (this.health <= 0 && !this.dead)
@@ -236,12 +237,10 @@ public class Player : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-
         Projectile projectile = collision.gameObject.GetComponent<Projectile>();
 
         if (projectile != null)
         {
-
             projectile.DisableProjectile();
 
             if (this.isControlled)

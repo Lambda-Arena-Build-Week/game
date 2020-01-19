@@ -7,11 +7,10 @@ public class Weapon : MonoBehaviour
     public float fireRate = 0.5f;
     public Transform fireSpawn;
     public int playerId;
+    public Ammo ammo;
 
     private bool fire;
  
-    public Ammo ammo;
-
     private void OnEnable()
     {  
         this.fire = false;
@@ -21,8 +20,7 @@ public class Weapon : MonoBehaviour
     private void Update()
     {
         if (this.ammo != null)
-            this.ammo.Fire(this.fire);
-        
+            this.ammo.Fire(this.fire);       
     }
 
     public void Fire(bool value)
