@@ -23,20 +23,26 @@ public class Multiplayer : MonoBehaviour
     WebSocket ws;
 #endif
 
+    public static Multiplayer instance = null;
+
     public Player player;
+    public bool connected = false;
     public Dictionary<int, Player> players = new Dictionary<int, Player>();
     public int id;
     private List<Message> messageQueue = new List<Message>();
+ 
 
     private bool processMessages = true;
 
-    void Start()
-    {
-        StartCoroutine(ProcessMessages());
-    }
-
     private void OnEnable()
     {
+        if (instance == null)
+            instance = this;
+
+
+        this.player.isMenu = false;
+        this.connected = false;
+
 #if UNITY_WEBGL && !UNITY_EDITOR
         WebSocketInit("ws://192.168.1.200:8000");
 #endif
@@ -48,7 +54,7 @@ public class Multiplayer : MonoBehaviour
         {
 
             Debug.Log("Connected");
-
+            this.connected = true;
 
         };
 
@@ -59,7 +65,7 @@ public class Multiplayer : MonoBehaviour
 
         ws.OnClose += (sender, e) =>
         {
-           // ws.Send("I'm leaving");
+            // ws.Send("I'm leaving");
         };
 
         ws.OnMessage += (sender, e) =>
@@ -71,7 +77,7 @@ public class Multiplayer : MonoBehaviour
         ws.Connect();
 #endif
 
-        this.player.isMenu = false;
+        StartCoroutine(ProcessMessages());
     }
 
     private void OnApplicationQuit()
@@ -96,6 +102,9 @@ public class Multiplayer : MonoBehaviour
 
     public void Send(string data)
     {
+        if (!this.connected)
+            return;
+
 #if UNITY_WEBGL && !UNITY_EDITOR
         WebSocketSend(data);
 #else
@@ -121,7 +130,7 @@ public class Multiplayer : MonoBehaviour
                     playerScript.animSpeed = messageQueue[i].animSpeed;
                     playerScript.animator.SetFloat("speed", playerScript.animSpeed);
                     playerScript.isControlled = false;
-            
+
                     players.Add(messageQueue[i].id, playerScript);
                 }
                 else
@@ -140,13 +149,24 @@ public class Multiplayer : MonoBehaviour
                 else
                 if (messageQueue[i].message == "playerdisconnect")
                 {
-                    Destroy(players[messageQueue[i].id]);
+                    if (players.ContainsKey(messageQueue[i].id))
+                        Destroy(players[messageQueue[i].id]);
+                }
+                else
+                if (messageQueue[i].message == "roundfired" && messageQueue[i].shooterid != this.id)
+                {
+                    Message message = messageQueue[i];
+                    this.FireRound(message.shooterid, message.roundLifeTime, message.damagePerRound, message.position, message.rotation, message.force, false);
                 }
             }
 
             messageQueue.Clear();
             yield return null;
         }
+    }
+    public void OnConnect()
+    {
+        this.connected = true;
     }
 
     public void OnMessage(string message)
@@ -179,6 +199,44 @@ public class Multiplayer : MonoBehaviour
         if (msg.message == "playerdisconnect")
         {
             messageQueue.Add(msg);
+        }
+        else
+        if (msg.message == "killplayer")
+        {
+            players[msg.targetid].health = 0;
+        }
+        else
+        if (msg.message == "roundfired" && msg.shooterid != this.id)
+            messageQueue.Add(msg);
+    }
+
+ 
+
+
+    public void FireRound(int playerId, float roundLifetime, int damagePerRound, Vector3 position, Quaternion rotation, float force, bool send)
+    {
+        Projectile projectileScript = AssetManager.instance.GetProjectile();
+        projectileScript.roundLifetime = roundLifetime;
+        projectileScript.damageDone = damagePerRound;
+        projectileScript.playerId = playerId;
+        projectileScript.gameObject.transform.position = position;
+        projectileScript.gameObject.transform.rotation = rotation;
+        projectileScript.gameObject.SetActive(true);
+        projectileScript.rigid.AddForce(projectileScript.rigid.transform.forward * force, ForceMode.Impulse);
+
+        if (send)
+        {
+            Message message = new Message();
+
+            message.message = "roundfired";
+            message.damagePerRound = damagePerRound;
+            message.roundLifeTime = roundLifetime;
+            message.force = force;
+            message.position = position;
+            message.rotation = rotation;
+            message.shooterid = this.id;
+
+            this.Send(JsonUtility.ToJson(message));
         }
     }
 }

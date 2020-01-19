@@ -20,11 +20,9 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        if (this.fire)
-        {
-            if (this.ammo != null)
-                this.ammo.Fire();
-        }
+        if (this.ammo != null)
+            this.ammo.Fire(this.fire);
+        
     }
 
     public void Fire(bool value)

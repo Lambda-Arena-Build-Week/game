@@ -233,4 +233,32 @@ public class Player : MonoBehaviour
         this.position = this.rigid.position;
         this.rotation = this.rigid.rotation;
     }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+
+        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+
+        if (projectile != null)
+        {
+
+            projectile.DisableProjectile();
+
+            if (this.isControlled)
+            { 
+                this.health -= projectile.damageDone;
+
+                if (this.health <= 0)
+                {
+                    Message message = new Message();
+                    message.id = this.id;
+                    message.message = "killplayer";
+                    message.targetid = this.id;
+                    message.shooterid = projectile.playerId;
+
+                    Multiplayer.instance.Send(JsonUtility.ToJson(message));
+                }
+            }
+        }
+    }
 }

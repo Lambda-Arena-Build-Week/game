@@ -17,7 +17,7 @@ public class Projectile : MonoBehaviour
             this.rigid = this.GetComponent<Rigidbody>();
     }
 
-    private void DisableProjectile()
+    public void DisableProjectile()
     {
         this.rigid.angularVelocity = Vector3.zero;
         this.rigid.velocity = Vector3.zero;
@@ -39,11 +39,9 @@ public class Projectile : MonoBehaviour
     {
         Player player = collision.gameObject.GetComponent<Player>();
 
-        if (player != null)
-        {
-            player.health -= this.damageDone;    
-        }
+        if (player == null)
+            this.DisableProjectile();
 
-        this.DisableProjectile();
+
     }
 }

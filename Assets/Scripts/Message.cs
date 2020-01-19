@@ -7,10 +7,13 @@ public struct Message
 {
     public string message;
     public int id;
-    public string shooterid;
-    public string targetid;
+    public int shooterid;
+    public int targetid;
     public Vector3 position;
     public Quaternion rotation;
+    public float force;
+    public float roundLifeTime;
+    public int damagePerRound;
     public Color shirtColor;
     public Color pantsColor;
     public Color skinColor;
