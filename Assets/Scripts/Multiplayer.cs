@@ -170,7 +170,7 @@ public class Multiplayer : MonoBehaviour
 
         if (msg.id == this.id)
             return;
-
+ 
         if (msg.message == "playerupdate")
         {
             if (players.ContainsKey(msg.id))
@@ -227,6 +227,7 @@ public class Multiplayer : MonoBehaviour
             message.position = position;
             message.rotation = rotation;
             message.shooterid = this.id;
+            message.id = this.id;
 
             this.Send(JsonUtility.ToJson(message));
         }

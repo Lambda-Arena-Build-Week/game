@@ -1881,6 +1881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8771498d15da4d92ae5d2f8d714dbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   isControlled: 0
   moveSpeed: 2
   turnSpeed: 10
@@ -1895,7 +1896,7 @@ MonoBehaviour:
   ragdollController: {fileID: 2131474570264897175}
   dead: 0
   capsuleCollider: {fileID: 6889537575998353682}
-  isMenu: 1
+  isMenu: 0
   model: {fileID: 3618177678527149922}
   rigid: {fileID: -7212805604123193251}
   weapon: {fileID: 0}
@@ -1903,7 +1904,6 @@ MonoBehaviour:
   weaponMount: {fileID: 1721387259718831951}
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
-  id: 0
   animSpeed: 0.5
 --- !u!136 &6889537575998353682
 CapsuleCollider:
