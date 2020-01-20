@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Ammo : MonoBehaviour
 {
-    public string ammoPrefab = "Projectile";
     public int playerId;
     public int numberOfRounds = 12;
     public int damagePerRound = 5;

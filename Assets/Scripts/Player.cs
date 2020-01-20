@@ -173,6 +173,7 @@ public class Player : MonoBehaviour
         this.dead = true;
         this.animator.enabled = false;
         this.capsuleCollider.enabled = false;
+        this.weaponScript.Fire(false);
     }
 
     public void Update()

@@ -28,6 +28,7 @@ public class Multiplayer : MonoBehaviour
     public bool connected = false;
     public Dictionary<int, Player> players = new Dictionary<int, Player>();
     public int id;
+    public bool connectToGame = false;
 
     private List<Message> messageQueue = new List<Message>();
     private bool processMessages = true;
@@ -96,7 +97,7 @@ public class Multiplayer : MonoBehaviour
 
     public void Send(string data)
     {
-        if (!this.connected)
+        if (!this.connected || !this.connectToGame)
             return;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -170,7 +171,7 @@ public class Multiplayer : MonoBehaviour
 
         if (msg.id == this.id)
             return;
- 
+
         if (msg.message == "playerupdate")
         {
             if (players.ContainsKey(msg.id))
@@ -231,5 +232,15 @@ public class Multiplayer : MonoBehaviour
 
             this.Send(JsonUtility.ToJson(message));
         }
+    }
+
+    public void ConnectToGame()
+    {
+        this.connectToGame = true;
+    }
+
+    public void DisconnectFromGame()
+    {
+        this.connectToGame = false;
     }
 }
