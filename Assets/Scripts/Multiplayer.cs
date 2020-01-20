@@ -31,7 +31,6 @@ public class Multiplayer : MonoBehaviour
     public bool connectToGame = false;
 
     private List<Message> messageQueue = new List<Message>();
-    private bool processMessages = true;
 
     private void OnEnable()
     {
@@ -42,11 +41,11 @@ public class Multiplayer : MonoBehaviour
         this.connected = false;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-        WebSocketInit("ws://192.168.1.200:8000");
+        WebSocketInit("wss://bwgame-node-be.herokuapp.com");
 #endif
 
 #if !UNITY_WEBGL || UNITY_EDITOR
-        ws = new WebSocket("ws://192.168.1.200:8000");
+        ws = new WebSocket("wss://bwgame-node-be.herokuapp.com");
 
         ws.OnOpen += (sender, e) =>
         {
@@ -72,7 +71,6 @@ public class Multiplayer : MonoBehaviour
         ws.Connect();
 #endif
 
-        //StartCoroutine(ProcessMessages());
     }
 
     private void OnApplicationQuit()

@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
         this.animator.enabled = true;
         this.animator.SetFloat("speed", 0.0f);
         this.animSpeed = 0.0f;
-
+        this.ragdollController.TurnRagdollOff();
         this.GetMaterials();            
 
         this.ChangeColors();
