@@ -153,6 +153,17 @@ public class Multiplayer : MonoBehaviour
                     Message message = messageQueue[i];
                     this.FireRound(message.shooterid, message.roundLifeTime, message.damagePerRound, message.position, message.rotation, message.force, false);
                 }
+                else
+                if (messageQueue[i].message == "respawn")
+                {
+                    if (messageQueue[i].id == this.id)
+                    {
+                        this.player.gameObject.SetActive(true);
+                        this.player.Spawn(messageQueue[i].position);
+                    }
+                    else
+                        players[messageQueue[i].id].Spawn(messageQueue[i].position);
+                }
             }
 
             messageQueue.Clear();
@@ -168,6 +179,11 @@ public class Multiplayer : MonoBehaviour
     public void OnMessage(string message)
     {
         Message msg = (Message)JsonUtility.FromJson(message, typeof(Message));
+
+        if (msg.message == "respawn")
+        {
+            messageQueue.Add(msg);
+        }
 
         if (msg.id == this.id)
             return;

@@ -1628,6 +1628,9 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
   animSpeed: 0.5
+  destroyTrigger: 30
+  isRagdoll: 0
+  rend: {fileID: 0}
 --- !u!54 &568664650
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1761,6 +1764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8315e252fc88542748e8a1062758eabc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parts: []
 --- !u!1 &631696190
 GameObject:
   m_ObjectHideFlags: 0
@@ -3410,6 +3414,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8315e252fc88542748e8a1062758eabc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parts:
+  - {fileID: 1324907345}
+  - {fileID: 1187625545}
+  - {fileID: 1596477043}
+  - {fileID: 742153413}
+  - {fileID: 1146701860}
+  - {fileID: 855805334}
+  - {fileID: 446807957}
+  - {fileID: 342888874}
+  - {fileID: 1085910520}
+  - {fileID: 311774631}
+  - {fileID: 775299322}
 --- !u!1 &1100592913 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100036, guid: 576b3520da5644fcd8949cf278ed64f6,
@@ -4885,6 +4901,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1926726149}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &1784719748 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 13700000, guid: 576b3520da5644fcd8949cf278ed64f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1926726149}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1830504445
 GameObject:
   m_ObjectHideFlags: 0
@@ -4981,6 +5003,9 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
   animSpeed: 0.5
+  destroyTrigger: 30
+  isRagdoll: 0
+  rend: {fileID: 1784719748}
 --- !u!54 &1856688155
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5052,15 +5077,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400020, guid: 576b3520da5644fcd8949cf278ed64f6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.16050915
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400020, guid: 576b3520da5644fcd8949cf278ed64f6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.47940317
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400020, guid: 576b3520da5644fcd8949cf278ed64f6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.11351034
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400020, guid: 576b3520da5644fcd8949cf278ed64f6, type: 3}
       propertyPath: m_LocalRotation.x

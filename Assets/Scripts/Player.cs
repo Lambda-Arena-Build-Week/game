@@ -30,6 +30,9 @@ public class Player : MonoBehaviour
     public Vector3 position;
     public Quaternion rotation;
     public float animSpeed = 0.0f;
+    public float destroyTrigger = 30.0f;
+    public bool isRagdoll = false;
+    public Renderer rend;
 
     private Dictionary<string, Material> materials = new Dictionary<string, Material>();
     private Vector3 moveDirection = Vector3.zero;
@@ -37,7 +40,8 @@ public class Player : MonoBehaviour
     private bool usedController = false;
     private Vector3 targetPos;
     private int floorLayer;
-
+    private float destroyTimer = 0.0f;
+    
     private void Start()
     {
         if (!isMenu)
@@ -169,24 +173,43 @@ public class Player : MonoBehaviour
     {
         this.animSpeed = 0.0f;
         this.animator.SetFloat("speed", 0.0f);
-        this.ragdollController.TurnRagdollOn();
         this.dead = true;
-        this.animator.enabled = false;
         this.capsuleCollider.enabled = false;
         this.weaponScript.Fire(false);
     }
 
+    public void Spawn(Vector3 pos)
+    {
+        this.rigid.MovePosition(pos);
+        this.rigid.rotation = Quaternion.identity;
+        this.health = 100;
+        this.ragdollController.TurnRagdollOff();
+        this.capsuleCollider.enabled = true;
+        this.dead = false;
+        this.animator.enabled = true;
+        this.rend.enabled = true;
+    }
+
     public void Update()
     {
+
+        if (this.isRagdoll)
+        {
+            this.ragdollController.TurnRagdollOn();
+
+            this.destroyTimer += Time.deltaTime;
+
+            if (this.destroyTimer >= this.destroyTrigger)
+                Destroy(this.gameObject);
+
+            return;
+        }
         if (!this.dead && !this.isMenu && this.isControlled)
         {
             this.DoMovement();
             this.DoLook();
             this.DoWeapon();
         }
-
-        if (this.health <= 0 && !this.dead)
-            this.KillPlayer();
     }
 
     // Applies players movement and look direction
@@ -224,6 +247,9 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (this.isRagdoll)
+            return;
+
         if (!this.dead && !this.isMenu && this.isControlled)
         {
             this.ApplyMovement();
@@ -248,7 +274,7 @@ public class Player : MonoBehaviour
             { 
                 this.health -= projectile.damageDone;
 
-                if (this.health <= 0)
+                if (this.health <= 0 && !this.dead)
                 {
                     Message message = new Message();
                     message.id = this.id;
@@ -257,6 +283,20 @@ public class Player : MonoBehaviour
                     message.shooterid = projectile.playerId;
 
                     Multiplayer.instance.Send(JsonUtility.ToJson(message));
+                    
+                    GameObject ragdoll = Instantiate(this.gameObject);
+                    Player script = ragdoll.GetComponent<Player>();
+                    script.isRagdoll = true;
+
+                    Vector3 pos = script.rigid.position;
+                    pos.y += 0.1f;
+                    script.rigid.position = pos;
+                    script.capsuleCollider.enabled = false;
+                    script.health = 0;
+                    script.animator.enabled = false;
+                    this.rend.enabled = false;
+                    this.gameObject.SetActive(false);
+                    this.KillPlayer();
                 }
             }
         }
