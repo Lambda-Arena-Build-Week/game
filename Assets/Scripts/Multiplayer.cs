@@ -61,7 +61,7 @@ public class Multiplayer : MonoBehaviour
 
         ws.OnClose += (sender, e) =>
         {
-            // ws.Send("I'm leaving");
+            
         };
 
         ws.OnMessage += (sender, e) =>
@@ -72,7 +72,7 @@ public class Multiplayer : MonoBehaviour
         ws.Connect();
 #endif
 
-        StartCoroutine(ProcessMessages());
+        //StartCoroutine(ProcessMessages());
     }
 
     private void OnApplicationQuit()
@@ -84,6 +84,8 @@ public class Multiplayer : MonoBehaviour
 
     void FixedUpdate()
     {
+        this.ProcessMessages();
+
         Message message = new Message();
         message.message = "playerupdate";
         message.id = this.id;
@@ -107,10 +109,9 @@ public class Multiplayer : MonoBehaviour
 #endif
     }
 
-    public IEnumerator ProcessMessages()
+    public void ProcessMessages()
     {
-        while (processMessages)
-        {
+     
             for (int i = 0; i < messageQueue.Count; i++)
             {
                 if (messageQueue[i].message == "playerspawn")
@@ -144,8 +145,11 @@ public class Multiplayer : MonoBehaviour
                 else
                 if (messageQueue[i].message == "playerdisconnect")
                 {
-                    if (players.ContainsKey(messageQueue[i].id))
-                        Destroy(players[messageQueue[i].id]);
+                if (players.ContainsKey(messageQueue[i].id) && messageQueue[i].id != this.id)
+                {
+                    Destroy(players[messageQueue[i].id].gameObject);
+                    players.Remove(messageQueue[i].id);
+                }
                 }
                 else
                 if (messageQueue[i].message == "roundfired" && messageQueue[i].shooterid != this.id)
@@ -162,13 +166,20 @@ public class Multiplayer : MonoBehaviour
                         this.player.Spawn(messageQueue[i].position);
                     }
                     else
+                    {
+                        players[messageQueue[i].id].gameObject.SetActive(true);
                         players[messageQueue[i].id].Spawn(messageQueue[i].position);
+                    }
                 }
-            }
+                else
+                if (messageQueue[i].message == "killplayer" && messageQueue[i].id != this.id)
+                {
+                    players[messageQueue[i].targetid].KillPlayer();
+                }
+        }
 
             messageQueue.Clear();
-            yield return null;
-        }
+        
     }
 
     public void OnConnect()
@@ -208,18 +219,10 @@ public class Multiplayer : MonoBehaviour
             this.player.id = msg.id;
         }
         else
-        if (msg.message == "playerdisconnect")
         {
             messageQueue.Add(msg);
         }
-        else
-        if (msg.message == "killplayer")
-        {
-            players[msg.targetid].health = 0;
-        }
-        else
-        if (msg.message == "roundfired" && msg.shooterid != this.id)
-            messageQueue.Add(msg);
+      
     }
 
     public void FireRound(int playerId, float roundLifetime, int damagePerRound, Vector3 position, Quaternion rotation, float force, bool send)

@@ -168,26 +168,38 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Kills player. Turns off animation and enables ragdoll physics
-    private void KillPlayer()
+    // Kills player. And creates ragdoll physics object
+    public void KillPlayer()
     {
         this.animSpeed = 0.0f;
         this.animator.SetFloat("speed", 0.0f);
         this.dead = true;
         this.capsuleCollider.enabled = false;
         this.weaponScript.Fire(false);
+        this.health = 0;
+
+        GameObject ragdoll = Instantiate(this.gameObject);
+        Player script = ragdoll.GetComponent<Player>();
+        script.isRagdoll = true;
+        
+        Vector3 pos = script.rigid.position;
+        pos.y += 0.1f;
+        script.rigid.position = pos;
+        script.capsuleCollider.enabled = false;
+        script.health = 0;
+        script.animator.enabled = false;
+        this.rigid.MovePosition(new Vector3(-10000.0f, -10000.0f, -10000.0f));
     }
 
     public void Spawn(Vector3 pos)
     {
         this.rigid.MovePosition(pos);
-        this.rigid.rotation = Quaternion.identity;
+        this.rigid.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         this.health = 100;
-        this.ragdollController.TurnRagdollOff();
         this.capsuleCollider.enabled = true;
         this.dead = false;
         this.animator.enabled = true;
-        this.rend.enabled = true;
+        this.ragdollController.TurnRagdollOff();
     }
 
     public void Update()
@@ -281,22 +293,10 @@ public class Player : MonoBehaviour
                     message.message = "killplayer";
                     message.targetid = this.id;
                     message.shooterid = projectile.playerId;
-
+                    this.dead = true;
                     Multiplayer.instance.Send(JsonUtility.ToJson(message));
                     
-                    GameObject ragdoll = Instantiate(this.gameObject);
-                    Player script = ragdoll.GetComponent<Player>();
-                    script.isRagdoll = true;
-
-                    Vector3 pos = script.rigid.position;
-                    pos.y += 0.1f;
-                    script.rigid.position = pos;
-                    script.capsuleCollider.enabled = false;
-                    script.health = 0;
-                    script.animator.enabled = false;
-                    this.rend.enabled = false;
-                    this.gameObject.SetActive(false);
-                    this.KillPlayer();
+              
                 }
             }
         }
