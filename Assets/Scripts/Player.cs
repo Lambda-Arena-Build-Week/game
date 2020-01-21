@@ -93,16 +93,20 @@ public class Player : MonoBehaviour
         this.materials["shoes"].color = this.shoesColor;
         this.materials["skin"].color = this.skinColor;
 
-        Message message = new Message();
-        message.id = this.id;
-        message.message = "setcolor";
-        message.pantsColor = this.pantsColor;
-        message.hairColor = this.hairColor;
-        message.shirtColor = this.shirtColor;
-        message.shoesColor = this.shoesColor;
-        message.skinColor = this.skinColor;
+        if (!this.isMenu && this.isControlled)
+        {
+            Message message = new Message();
 
-        Multiplayer.instance.Send(JsonUtility.ToJson(message));
+            message.id = this.id;
+            message.message = "setcolor";
+            message.pantsColor = this.pantsColor;
+            message.hairColor = this.hairColor;
+            message.shirtColor = this.shirtColor;
+            message.shoesColor = this.shoesColor;
+            message.skinColor = this.skinColor;
+
+            Multiplayer.instance.Send(JsonUtility.ToJson(message));
+        }
     }
 
     // Poll input and update player's movement vector
