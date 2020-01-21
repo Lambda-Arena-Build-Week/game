@@ -19,6 +19,7 @@ public struct Message
     public Color skinColor;
     public Color hairColor;
     public Color shoesColor;
+    public string weapon;
     public float animSpeed;
 }
 

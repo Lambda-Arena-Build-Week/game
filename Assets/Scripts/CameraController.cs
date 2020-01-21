@@ -10,7 +10,6 @@ public class CameraController : MonoBehaviour
  
     void Update()
     {
-
         if (target.position.y > -9000.0f)
         {
             this.transform.position = this.target.position + this.offset;

@@ -34,6 +34,8 @@ public class Multiplayer : MonoBehaviour
 
     private void OnEnable()
     {
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 1;
         if (instance == null)
             instance = this;
 
@@ -60,7 +62,7 @@ public class Multiplayer : MonoBehaviour
 
         ws.OnClose += (sender, e) =>
         {
-            
+
         };
 
         ws.OnMessage += (sender, e) =>
@@ -109,75 +111,90 @@ public class Multiplayer : MonoBehaviour
 
     public void ProcessMessages()
     {
-     
-            for (int i = 0; i < messageQueue.Count; i++)
+
+        for (int i = 0; i < messageQueue.Count; i++)
+        {
+            if (messageQueue[i].message == "playerspawn")
             {
-                if (messageQueue[i].message == "playerspawn")
-                {
-                    if (players.ContainsKey(messageQueue[i].id) || messageQueue[i].id == this.id)
-                        break;
+                if (players.ContainsKey(messageQueue[i].id) || messageQueue[i].id == this.id)
+                    break;
 
-                    GameObject newPlayer = (GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
-                    Player playerScript = newPlayer.GetComponent<Player>();
-                    playerScript.rigid.position = messageQueue[i].position;
-                    playerScript.rigid.rotation = messageQueue[i].rotation;
-                    playerScript.animSpeed = messageQueue[i].animSpeed;
-                    playerScript.animator.SetFloat("speed", playerScript.animSpeed);
-                    playerScript.isControlled = false;
+                GameObject newPlayer = (GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
+                Player playerScript = newPlayer.GetComponent<Player>();
+                playerScript.rigid.position = messageQueue[i].position;
+                playerScript.rigid.rotation = messageQueue[i].rotation;
+                playerScript.animSpeed = messageQueue[i].animSpeed;
+                playerScript.animator.SetFloat("speed", playerScript.animSpeed);
+                playerScript.isControlled = false;
 
-                    players.Add(messageQueue[i].id, playerScript);
-                }
-                else
-                if (messageQueue[i].message == "playerupdate")
-                {
-                    if (messageQueue[i].id == this.id)
-                        break;
+                players.Add(messageQueue[i].id, playerScript);
+            }
+            else
+            if (messageQueue[i].message == "playerupdate")
+            {
+                if (messageQueue[i].id == this.id)
+                    break;
 
-                    Player playerScript = players[messageQueue[i].id].GetComponent<Player>();
+                Player playerScript = players[messageQueue[i].id].GetComponent<Player>();
 
-                    playerScript.animSpeed = messageQueue[i].animSpeed;
-                    playerScript.animator.SetFloat("speed", playerScript.animSpeed);
-                    players[messageQueue[i].id].rigid.MovePosition(Vector3.Lerp(playerScript.rigid.position, messageQueue[i].position, 0.25f));
-                    players[messageQueue[i].id].rigid.rotation = messageQueue[i].rotation;
-                }
-                else
-                if (messageQueue[i].message == "playerdisconnect")
-                {
+                playerScript.animSpeed = messageQueue[i].animSpeed;
+                playerScript.animator.SetFloat("speed", playerScript.animSpeed);
+                players[messageQueue[i].id].rigid.MovePosition(messageQueue[i].position);
+                players[messageQueue[i].id].rigid.rotation = messageQueue[i].rotation;
+            }
+            else
+            if (messageQueue[i].message == "playerdisconnect")
+            {
                 if (players.ContainsKey(messageQueue[i].id) && messageQueue[i].id != this.id)
                 {
                     Destroy(players[messageQueue[i].id].gameObject);
                     players.Remove(messageQueue[i].id);
                 }
+            }
+            else
+            if (messageQueue[i].message == "roundfired" && messageQueue[i].shooterid != this.id)
+            {
+                Message message = messageQueue[i];
+                this.FireRound(message.shooterid, message.roundLifeTime, message.damagePerRound, message.position, message.rotation, message.force, false);
+            }
+            else
+            if (messageQueue[i].message == "respawn")
+            {
+                if (messageQueue[i].id == this.id)
+                {
+                    this.player.gameObject.SetActive(true);
+                    this.player.Spawn(messageQueue[i].position);
                 }
                 else
-                if (messageQueue[i].message == "roundfired" && messageQueue[i].shooterid != this.id)
                 {
-                    Message message = messageQueue[i];
-                    this.FireRound(message.shooterid, message.roundLifeTime, message.damagePerRound, message.position, message.rotation, message.force, false);
+                    players[messageQueue[i].id].gameObject.SetActive(true);
+                    players[messageQueue[i].id].Spawn(messageQueue[i].position);
                 }
-                else
-                if (messageQueue[i].message == "respawn")
-                {
-                    if (messageQueue[i].id == this.id)
-                    {
-                        this.player.gameObject.SetActive(true);
-                        this.player.Spawn(messageQueue[i].position);
-                    }
-                    else
-                    {
-                        players[messageQueue[i].id].gameObject.SetActive(true);
-                        players[messageQueue[i].id].Spawn(messageQueue[i].position);
-                    }
-                }
-                else
-                if (messageQueue[i].message == "killplayer" && messageQueue[i].id != this.id)
-                {
-                    players[messageQueue[i].targetid].KillPlayer();
-                }
+            }
+            else
+            if (messageQueue[i].message == "killplayer" && messageQueue[i].id != this.id)
+            {
+                players[messageQueue[i].targetid].KillPlayer();
+            }
+            else
+            if (messageQueue[i].message == "switchweapon" && messageQueue[i].id != this.id)
+            {
+                players[messageQueue[i].targetid].SwitchWeapon(messageQueue[i].weapon);
+            }
+            else
+            if (messageQueue[i].message == "setcolor" && messageQueue[i].id != this.id)
+            {
+                players[messageQueue[i].targetid].pantsColor = messageQueue[i].pantsColor;
+                players[messageQueue[i].targetid].shirtColor = messageQueue[i].shirtColor;
+                players[messageQueue[i].targetid].shoesColor = messageQueue[i].shoesColor;
+                players[messageQueue[i].targetid].hairColor = messageQueue[i].hairColor;
+                players[messageQueue[i].targetid].skinColor = messageQueue[i].skinColor;
+                players[messageQueue[i].targetid].ChangeColors();
+            }
         }
 
-            messageQueue.Clear();
-        
+        messageQueue.Clear();
+
     }
 
     public void OnConnect()
@@ -220,7 +237,7 @@ public class Multiplayer : MonoBehaviour
         {
             messageQueue.Add(msg);
         }
-      
+
     }
 
     public void FireRound(int playerId, float roundLifetime, int damagePerRound, Vector3 position, Quaternion rotation, float force, bool send)

@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
     {
         if (!isMenu)
         {
-            this.weapon = (GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/Weapons/Shotgun"));
+            this.weapon = (GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/Weapons/Handgun"));
             this.weaponScript = this.weapon.GetComponent<Weapon>();
             this.weaponScript.playerId = this.id;
             this.weapon.transform.position = this.weaponMount.position;
@@ -92,6 +92,17 @@ public class Player : MonoBehaviour
         this.materials["shirt"].color = this.shirtColor;
         this.materials["shoes"].color = this.shoesColor;
         this.materials["skin"].color = this.skinColor;
+
+        Message message = new Message();
+        message.id = this.id;
+        message.message = "setcolor";
+        message.pantsColor = this.pantsColor;
+        message.hairColor = this.hairColor;
+        message.shirtColor = this.shirtColor;
+        message.shoesColor = this.shoesColor;
+        message.skinColor = this.skinColor;
+
+        Multiplayer.instance.Send(JsonUtility.ToJson(message));
     }
 
     // Poll input and update player's movement vector
@@ -222,6 +233,9 @@ public class Player : MonoBehaviour
             this.DoLook();
             this.DoWeapon();
         }
+
+        if (this.isControlled)
+            Health.instance.health = Mathf.Clamp(this.health, 0, 100);
     }
 
     // Applies players movement and look direction
@@ -274,6 +288,50 @@ public class Player : MonoBehaviour
         this.rotation = this.rigid.rotation;
     }
 
+    public void SwitchWeapon(string gun)
+    {
+        if (this.weapon)
+            Destroy(this.weapon);
+
+        this.weapon = (GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/Weapons/" + gun));
+        this.weaponScript = this.weapon.GetComponent<Weapon>();
+        this.weaponScript.playerId = this.id;
+        this.weapon.transform.position = this.weaponMount.position;
+        this.weapon.transform.rotation = this.weaponMount.rotation;
+        this.weapon.transform.parent = this.weaponMount;
+
+        Message message = new Message();
+        message.id = this.id;
+        message.message = "switchweapon";
+        message.weapon = gun;
+        Multiplayer.instance.Send(JsonUtility.ToJson(message));
+    }
+
+    public void OnTriggerEnter(Collider trigger)
+    {
+        string tag = trigger.gameObject.tag;
+
+        if (tag.Equals("HealthPack") && this.health < 100)
+        {
+            this.health = 100;
+            trigger.gameObject.SetActive(false);
+        }
+        else
+        if (tag.Equals("Shotgun") && !this.weapon.tag.Equals("Shotgun"))
+        {
+            this.health = 100;
+            trigger.gameObject.SetActive(false);
+            this.SwitchWeapon("Shotgun");
+        }
+        else
+        if (tag.Equals("Rifle") && !this.weapon.tag.Equals("Rifle"))
+        {
+            this.health = 100;
+            trigger.gameObject.SetActive(false);
+            this.SwitchWeapon("Rifle");
+        }
+    }
+
     public void OnCollisionEnter(Collision collision)
     {
         Projectile projectile = collision.gameObject.GetComponent<Projectile>();
@@ -294,9 +352,7 @@ public class Player : MonoBehaviour
                     message.targetid = this.id;
                     message.shooterid = projectile.playerId;
                     this.dead = true;
-                    Multiplayer.instance.Send(JsonUtility.ToJson(message));
-                    
-              
+                    Multiplayer.instance.Send(JsonUtility.ToJson(message));      
                 }
             }
         }
