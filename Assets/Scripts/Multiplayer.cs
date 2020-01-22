@@ -119,6 +119,7 @@ public class Multiplayer : MonoBehaviour
 
         for (int i = 0; i < messageQueue.Count; i++)
         {
+
             if (messageQueue[i].message == "playerspawn")
             {
                 if (players.ContainsKey(messageQueue[i].id) || messageQueue[i].id == this.id)
@@ -188,9 +189,9 @@ public class Multiplayer : MonoBehaviour
                 players[messageQueue[i].targetid].KillPlayer();
             }
             else
-            if (messageQueue[i].message == "switchweapon" && messageQueue[i].id != this.id)
+            if (players.ContainsKey(messageQueue[i].id) && messageQueue[i].message == "switchweapon" && messageQueue[i].id != this.id)
             {
-                players[messageQueue[i].targetid].SwitchWeapon(messageQueue[i].weapon);
+                players[messageQueue[i].id ].SwitchWeapon(messageQueue[i].weapon);
             }
         }
 
