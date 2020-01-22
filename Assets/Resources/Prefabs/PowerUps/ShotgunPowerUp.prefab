@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7935155680634987430}
   m_Layer: 13
   m_Name: ShotgunPowerUp
-  m_TagString: Shotgun
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   rotationSpeed: 2
+  model: Shotgun
 --- !u!135 &7935155680634987430
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -111,8 +112,8 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_MotionVectors: 2
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0

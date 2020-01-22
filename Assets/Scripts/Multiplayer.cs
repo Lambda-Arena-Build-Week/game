@@ -33,9 +33,7 @@ public class Multiplayer : MonoBehaviour
     private List<Message> messageQueue = new List<Message>();
 
     private void OnEnable()
-    {
-        Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 1;
+    { 
         if (instance == null)
             instance = this;
 
@@ -87,11 +85,18 @@ public class Multiplayer : MonoBehaviour
         this.ProcessMessages();
 
         Message message = new Message();
+
         message.message = "playerupdate";
         message.id = this.id;
         message.animSpeed = player.animSpeed;
         message.position = player.rigid.transform.position;
         message.rotation = player.rigid.transform.rotation;
+        message.pantsColor = player.pantsColor;
+        message.hairColor = player.hairColor;
+        message.shirtColor = player.shirtColor;
+        message.shoesColor = player.shoesColor;
+        message.skinColor = player.skinColor;
+
         string json = JsonUtility.ToJson(message);
 
         this.Send(json);
@@ -126,6 +131,12 @@ public class Multiplayer : MonoBehaviour
                 playerScript.animSpeed = messageQueue[i].animSpeed;
                 playerScript.animator.SetFloat("speed", playerScript.animSpeed);
                 playerScript.isControlled = false;
+                playerScript.pantsColor = messageQueue[i].pantsColor;
+                playerScript.shirtColor = messageQueue[i].shirtColor;
+                playerScript.shoesColor = messageQueue[i].shoesColor;
+                playerScript.hairColor = messageQueue[i].hairColor;
+                playerScript.skinColor = messageQueue[i].skinColor;
+                playerScript.ChangeColors();
 
                 players.Add(messageQueue[i].id, playerScript);
             }
@@ -180,16 +191,6 @@ public class Multiplayer : MonoBehaviour
             if (messageQueue[i].message == "switchweapon" && messageQueue[i].id != this.id)
             {
                 players[messageQueue[i].targetid].SwitchWeapon(messageQueue[i].weapon);
-            }
-            else
-            if (messageQueue[i].message == "setcolor" && messageQueue[i].id != this.id)
-            {
-                players[messageQueue[i].targetid].pantsColor = messageQueue[i].pantsColor;
-                players[messageQueue[i].targetid].shirtColor = messageQueue[i].shirtColor;
-                players[messageQueue[i].targetid].shoesColor = messageQueue[i].shoesColor;
-                players[messageQueue[i].targetid].hairColor = messageQueue[i].hairColor;
-                players[messageQueue[i].targetid].skinColor = messageQueue[i].skinColor;
-                players[messageQueue[i].targetid].ChangeColors();
             }
         }
 

@@ -6,6 +6,7 @@ public class PowerUp : MonoBehaviour
 {
     public int id;
     public float rotationSpeed = 2.0f;
+    public string model;
 
     private void Update()
     {

@@ -90,8 +90,8 @@ GameObject:
   - component: {fileID: 5747796221174762480}
   - component: {fileID: 8172368714024358192}
   m_Layer: 13
-  m_Name: Rifle
-  m_TagString: Rifle
+  m_Name: RiflePowerUp
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,6 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   rotationSpeed: 2
+  model: Rifle
 --- !u!135 &8172368714024358192
 SphereCollider:
   m_ObjectHideFlags: 0

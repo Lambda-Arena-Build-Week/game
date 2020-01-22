@@ -92,21 +92,6 @@ public class Player : MonoBehaviour
         this.materials["shirt"].color = this.shirtColor;
         this.materials["shoes"].color = this.shoesColor;
         this.materials["skin"].color = this.skinColor;
-
-        if (!this.isMenu && this.isControlled)
-        {
-            Message message = new Message();
-
-            message.id = this.id;
-            message.message = "setcolor";
-            message.pantsColor = this.pantsColor;
-            message.hairColor = this.hairColor;
-            message.shirtColor = this.shirtColor;
-            message.shoesColor = this.shoesColor;
-            message.skinColor = this.skinColor;
-
-            Multiplayer.instance.Send(JsonUtility.ToJson(message));
-        }
     }
 
     // Poll input and update player's movement vector
@@ -321,18 +306,11 @@ public class Player : MonoBehaviour
             trigger.gameObject.SetActive(false);
         }
         else
-        if (tag.Equals("Shotgun") && !this.weapon.tag.Equals("Shotgun"))
+        if (tag == "Weapon")
         {
-            this.health = 100;
+            PowerUp powerUp = trigger.gameObject.GetComponent<PowerUp>();
             trigger.gameObject.SetActive(false);
-            this.SwitchWeapon("Shotgun");
-        }
-        else
-        if (tag.Equals("Rifle") && !this.weapon.tag.Equals("Rifle"))
-        {
-            this.health = 100;
-            trigger.gameObject.SetActive(false);
-            this.SwitchWeapon("Rifle");
+            this.SwitchWeapon(powerUp.model);
         }
     }
 
