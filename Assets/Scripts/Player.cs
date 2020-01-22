@@ -298,6 +298,9 @@ public class Player : MonoBehaviour
 
     public void OnTriggerEnter(Collider trigger)
     {
+        if (!this.isControlled)
+            return;
+
         string tag = trigger.gameObject.tag;
 
         if (tag.Equals("HealthPack") && this.health < 100)
