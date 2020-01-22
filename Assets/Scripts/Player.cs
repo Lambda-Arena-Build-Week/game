@@ -281,7 +281,7 @@ public class Player : MonoBehaviour
     {
         if (this.weapon)
             Destroy(this.weapon);
-
+        
         this.weapon = (GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/Weapons/" + gun));
         this.weaponScript = this.weapon.GetComponent<Weapon>();
         this.weaponScript.playerId = this.id;
@@ -293,6 +293,8 @@ public class Player : MonoBehaviour
         message.id = this.id;
         message.message = "switchweapon";
         message.weapon = gun;
+
+        Multiplayer.instance.currentWeapon = gun;
         Multiplayer.instance.Send(JsonUtility.ToJson(message));
     }
 

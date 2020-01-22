@@ -29,7 +29,10 @@ public class Multiplayer : MonoBehaviour
     public Dictionary<int, Player> players = new Dictionary<int, Player>();
     public int id;
     public bool connectToGame = false;
-
+    public string currentWeapon = "handgun";
+    public AudioSource audioSource;
+    public List<AudioClip> audioClips = new List<AudioClip>();
+    
     private List<Message> messageQueue = new List<Message>();
 
     private void OnEnable()
@@ -96,7 +99,7 @@ public class Multiplayer : MonoBehaviour
         message.shirtColor = player.shirtColor;
         message.shoesColor = player.shoesColor;
         message.skinColor = player.skinColor;
-
+        message.weapon = this.currentWeapon;
         string json = JsonUtility.ToJson(message);
 
         this.Send(json);
@@ -139,6 +142,9 @@ public class Multiplayer : MonoBehaviour
                 playerScript.skinColor = messageQueue[i].skinColor;
                 playerScript.ChangeColors();
 
+                if (messageQueue[i].weapon != "handgun")
+                    playerScript.SwitchWeapon(messageQueue[i].weapon);
+
                 players.Add(messageQueue[i].id, playerScript);
             }
             else
@@ -167,6 +173,23 @@ public class Multiplayer : MonoBehaviour
             if (messageQueue[i].message == "roundfired" && messageQueue[i].shooterid != this.id)
             {
                 Message message = messageQueue[i];
+
+                int clip = 0;
+                switch (message.damagePerRound)
+                {
+                    case 20:
+                        clip = 0;
+                        break;
+                    case 10:
+                        clip = 1;
+                        break;
+                    case 5:
+                        clip = 2;
+                        break;
+                }
+                   
+                
+                AudioSource.PlayClipAtPoint(audioClips[clip], message.position);
                 this.FireRound(message.shooterid, message.roundLifeTime, message.damagePerRound, message.position, message.rotation, message.force, false);
             }
             else

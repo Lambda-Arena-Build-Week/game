@@ -14,6 +14,7 @@ public class Ammo : MonoBehaviour
     public float projectileForce = 10.0f;
     public bool singleShot = false;
     public Transform spawnPoint;
+    public AudioSource audioSource;
 
     private float fireTimer = 0.0f;
     private float coolDownTimer = 0.0f;
@@ -22,7 +23,6 @@ public class Ammo : MonoBehaviour
     private float spawnRate;
     private int roundsFired = 0;
     private float spread = 0.0f;
-    private bool flipSpread = false;
 
     void Start()
     {
@@ -40,22 +40,19 @@ public class Ammo : MonoBehaviour
         Vector3 position = this.spawnPoint.position;
         Quaternion rotation = this.spawnPoint.rotation;
 
-        if (!this.flipSpread)
+        if (!this.singleShot)
         {
-            this.spread += Random.Range(-this.spreadAngle, this.spreadAngle);
+            this.spread += this.spreadAngle / this.numberOfRounds;
             this.spread = Mathf.Clamp(this.spread, -this.spreadAngle, this.spreadAngle);
-            this.flipSpread = true;
         }
         else
         {
-            this.spread *= -1.0f;
-            this.spread = Mathf.Clamp(this.spread, -this.spreadAngle, this.spreadAngle);
-            this.flipSpread = false;
+            this.spread = Random.Range(-this.spreadAngle, this.spreadAngle);
         }
 
         Vector3 roundDirection = Quaternion.Euler(0.0f, this.spread, 0.0f) * this.spawnPoint.forward;
         rotation = Quaternion.LookRotation(roundDirection);
-
+        audioSource.Play();
         Multiplayer.instance.FireRound(this.playerId, this.roundLifetime, this.damagePerRound, position, rotation, this.projectileForce, true);
 
         if (this.singleShot)
@@ -67,6 +64,8 @@ public class Ammo : MonoBehaviour
     private void SingleShot()
     {
         this.fired = true;
+        this.spread = -this.spreadAngle * 0.5f;
+
         for (int i = 0; i < this.numberOfRounds; i++)
         {
             this.CreateProjectile();
