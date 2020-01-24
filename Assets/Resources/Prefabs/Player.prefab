@@ -285,13 +285,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
+  m_EnableProjection: 1
   m_ProjectionDistance: 0.1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnableCollision: 1
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &7459131502467687610
@@ -306,6 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26234a40bf5dc457e94afc652ea8b7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 1745396677071526399}
 --- !u!1 &3618177678527149832
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,13 +407,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
+  m_EnableProjection: 1
   m_ProjectionDistance: 0.1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnableCollision: 1
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &6967582571158363999
@@ -427,6 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26234a40bf5dc457e94afc652ea8b7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 456994198106497215}
 --- !u!1 &3618177678527149834
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,13 +561,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
+  m_EnableProjection: 1
   m_ProjectionDistance: 0.1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnableCollision: 1
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &489911153728545761
@@ -580,6 +582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26234a40bf5dc457e94afc652ea8b7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 6442083655014891175}
 --- !u!1 &3618177678527149838
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,13 +746,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
+  m_EnableProjection: 1
   m_ProjectionDistance: 0.1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnableCollision: 1
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &8996729193933676329
@@ -764,6 +767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26234a40bf5dc457e94afc652ea8b7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 3788917497313058317}
 --- !u!1 &3618177678527149844
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,13 +931,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
+  m_EnableProjection: 1
   m_ProjectionDistance: 0.1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnableCollision: 1
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &2279396138510502209
@@ -948,6 +952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26234a40bf5dc457e94afc652ea8b7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 8316058474283196220}
 --- !u!1 &3618177678527149850
 GameObject:
   m_ObjectHideFlags: 0
@@ -1081,13 +1086,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
+  m_EnableProjection: 1
   m_ProjectionDistance: 0.1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnableCollision: 1
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &8240332188219605624
@@ -1102,6 +1107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26234a40bf5dc457e94afc652ea8b7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 350817544371877177}
 --- !u!1 &3618177678527149920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1347,13 +1353,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
+  m_EnableProjection: 1
   m_ProjectionDistance: 0.1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnableCollision: 1
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &2593949804397047502
@@ -1368,6 +1374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26234a40bf5dc457e94afc652ea8b7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 6895511186150725269}
 --- !u!1 &3618177678527149926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1531,13 +1538,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
+  m_EnableProjection: 1
   m_ProjectionDistance: 0.1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnableCollision: 1
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &4039206717422845329
@@ -1552,6 +1559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26234a40bf5dc457e94afc652ea8b7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 421199476291124144}
 --- !u!1 &3618177678527149932
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,6 +1668,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8315e252fc88542748e8a1062758eabc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parts:
+  - {fileID: 2750545878838202846}
+  - {fileID: 7459131502467687610}
+  - {fileID: 2279396138510502209}
+  - {fileID: 2593949804397047502}
+  - {fileID: 8240332188219605624}
+  - {fileID: 4039206717422845329}
+  - {fileID: 6967582571158363999}
+  - {fileID: 489911153728545761}
+  - {fileID: 1900280859592191321}
+  - {fileID: 8996729193933676329}
+  - {fileID: 59873256998312114}
 --- !u!1 &3618177678527149938
 GameObject:
   m_ObjectHideFlags: 0
@@ -1793,13 +1813,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
+  m_EnableProjection: 1
   m_ProjectionDistance: 0.1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnableCollision: 1
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &1900280859592191321
@@ -1814,6 +1834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26234a40bf5dc457e94afc652ea8b7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 4902075308926777871}
 --- !u!1 &3618177678527149942
 GameObject:
   m_ObjectHideFlags: 0
@@ -1881,6 +1902,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8771498d15da4d92ae5d2f8d714dbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   isControlled: 0
   moveSpeed: 2
   turnSpeed: 10
@@ -1891,19 +1913,22 @@ MonoBehaviour:
   shirtColor: {r: 0.8509804, g: 0.15294118, b: 0, a: 1}
   shoesColor: {r: 0.39607844, g: 0.06666667, b: 0.023529412, a: 1}
   skinColor: {r: 0.85882354, g: 0.67058825, b: 0.49019608, a: 1}
-  playerRenderer: {fileID: 3618177678513486434}
   animator: {fileID: 3618177678517650594}
   ragdollController: {fileID: 2131474570264897175}
   dead: 0
-  isMenu: 1
+  capsuleCollider: {fileID: 6889537575998353682}
+  isMenu: 0
+  model: {fileID: 3618177678527149922}
   rigid: {fileID: -7212805604123193251}
   weapon: {fileID: 0}
   weaponScript: {fileID: 0}
-  weaponMount: {fileID: 0}
+  weaponMount: {fileID: 1721387259718831951}
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
-  id: 0
   animSpeed: 0.5
+  destroyTrigger: 30
+  isRagdoll: 0
+  rend: {fileID: 3618177678513486434}
 --- !u!136 &6889537575998353682
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1932,7 +1957,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!1 &3618177678527149944
 GameObject:
@@ -2066,13 +2091,13 @@ CharacterJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_EnableProjection: 0
+  m_EnableProjection: 1
   m_ProjectionDistance: 0.1
   m_ProjectionAngle: 180
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnableCollision: 1
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!114 &59873256998312114
@@ -2087,6 +2112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26234a40bf5dc457e94afc652ea8b7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 5837117549956395682}
 --- !u!1 &3618177678527149948
 GameObject:
   m_ObjectHideFlags: 0
@@ -2164,6 +2190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26234a40bf5dc457e94afc652ea8b7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 6721633940041437460}
 --- !u!1 &3618177678527149950
 GameObject:
   m_ObjectHideFlags: 0

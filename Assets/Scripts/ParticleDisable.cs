@@ -9,7 +9,6 @@ public class ParticleDisable : MonoBehaviour {
 		ParticleSystem.EmissionModule em = particle.emission;
 		em.enabled = true; 
 	}
-	
 
 	void Update () 
 	{

@@ -4,30 +4,111 @@ using UnityEngine;
 
 public class Ammo : MonoBehaviour
 {
-    public string ammoPrefab;
+    public int playerId;
     public int numberOfRounds = 12;
-    public List<GameObject> rounds = new List<GameObject>();
-
+    public int damagePerRound = 5;
     public float fireRate = 0.5f;
+    public float spreadAngle = 5.0f;
+    public float roundLifetime = 2.0f;
+    public float coolDownTime = 1.0f;
+    public float projectileForce = 10.0f;
+    public bool singleShot = false;
+    public Transform spawnPoint;
+    public AudioSource audioSource;
+
     private float fireTimer = 0.0f;
+    private float coolDownTimer = 0.0f;
+    private bool fire = false;
+    private bool fired = false;
+    private float spawnRate;
+    private int roundsFired = 0;
+    private float spread = 0.0f;
 
     void Start()
     {
-        
+        this.spawnRate = this.fireRate / this.numberOfRounds;
     }
 
-    private GameObject GetRound()
+    public void Fire(bool value)
     {
-        rounds.Sort((GameObject obj1, GameObject obj2) => obj1.activeInHierarchy.CompareTo(obj2.activeInHierarchy));
+        if (!this.fired)
+            this.fire = value;
+    }
 
-        if (!rounds[0].activeInHierarchy)
-            return rounds[0];
+    private void CreateProjectile()
+    {
+        Vector3 position = this.spawnPoint.position;
+        Quaternion rotation = this.spawnPoint.rotation;
 
-        return null;
+        if (!this.singleShot)
+        {
+            this.spread += this.spreadAngle / this.numberOfRounds;
+            this.spread = Mathf.Clamp(this.spread, -this.spreadAngle, this.spreadAngle);
+        }
+        else
+        {
+            this.spread = Random.Range(-this.spreadAngle, this.spreadAngle);
+        }
+
+        Vector3 roundDirection = Quaternion.Euler(0.0f, this.spread, 0.0f) * this.spawnPoint.forward;
+        rotation = Quaternion.LookRotation(roundDirection);
+        audioSource.Play();
+        Multiplayer.instance.FireRound(this.playerId, this.roundLifetime, this.damagePerRound, position, rotation, this.projectileForce, true);
+
+        if (this.singleShot)
+            this.roundsFired = this.numberOfRounds;
+        else
+            this.roundsFired++;
+    }
+
+    private void SingleShot()
+    {
+        this.fired = true;
+        this.spread = -this.spreadAngle * 0.5f;
+
+        for (int i = 0; i < this.numberOfRounds; i++)
+        {
+            this.CreateProjectile();
+        }
+    }
+
+    private void MultiShot()
+    {
+        this.fireTimer += Time.deltaTime;
+
+        if (this.fireTimer >= this.spawnRate)
+        {
+            this.CreateProjectile();
+
+            if (this.roundsFired >= this.numberOfRounds)
+            {
+                this.fire = false;
+                this.fired = true;
+            }
+        }
     }
 
     void Update()
     {
-        
+        if (this.fire && !this.fired)
+        {
+            if (this.singleShot)
+                this.SingleShot();
+            else
+                this.MultiShot();
+        }
+
+        if (this.fired)
+        {
+            this.coolDownTimer += Time.deltaTime;
+
+            if (this.coolDownTimer >= this.coolDownTime)
+            {
+                this.fired = false;
+                this.fireTimer = 0.0f;
+                this.coolDownTimer = 0.0f;
+                this.roundsFired = 0;
+            }
+        }
     }
 }

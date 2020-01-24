@@ -7,16 +7,29 @@ public struct Message
 {
     public string message;
     public int id;
-    public string shooterid;
-    public string targetid;
+    public int shooterid;
+    public int targetid;
     public Vector3 position;
     public Quaternion rotation;
+    public float force;
+    public float roundLifeTime;
+    public int damagePerRound;
     public Color shirtColor;
     public Color pantsColor;
     public Color skinColor;
     public Color hairColor;
     public Color shoesColor;
+    public string weapon;
     public float animSpeed;
+    public int spawn;
+}
+
+[Serializable]
+public struct ChatMessage
+{
+    public string message;
+    public string gametag;
+    public string text;
 }
 
  

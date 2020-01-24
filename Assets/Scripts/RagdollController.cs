@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class RagdollController : MonoBehaviour
 {
-    private List<RagdollPart> parts;
-
-    void Start()
-    {
-        this.parts = new List<RagdollPart>(this.GetComponentsInChildren<RagdollPart>());
-    }
+    public List<RagdollPart> parts = new List<RagdollPart>();
 
     private void SetRagdoll(bool value)
     {

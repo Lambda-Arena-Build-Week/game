@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class PowerUp : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int id;
+    public float rotationSpeed = 2.0f;
+    public string model;
+    public GameObject obj;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        this.obj.transform.Rotate(new Vector3(0.0f,0.0f, this.rotationSpeed));
     }
 }
+
+
+
