@@ -12,55 +12,32 @@ public enum StagePieces
 
 public class Dungeon : MonoBehaviour
 {
-    List<GameObject> dungeonPieces = new List<GameObject>();
+    public static Dungeon instance = null;
+    public List<Room> rooms = new List<Room>();
+    public StagePiece[] stage;
 
-    void Start()
+    private void OnEnable()
     {
-        CreateRoom(Vector3.zero, new Vector2(15.0f, 15.0f));
+        if (instance == null)
+            instance = this;
     }
 
-    private GameObject GetStagePiece(StagePieces wallPiece)
+    public void SetStage(StagePiece[] stagePieces)
     {
-        switch (wallPiece)
+        this.stage = stagePieces;
+    }
+
+    public void BuildDungeon()
+    {
+        for (int i = 0; i < stage.Length; i++)
         {
-            case StagePieces.WALL:
-                return (GameObject)Instantiate(Resources.Load("Prefabs/Stage/Wall"));
-            case StagePieces.WALL_DOOR:
-                return (GameObject)Instantiate(Resources.Load("Prefabs/Stage/WallDoor"));
-            case StagePieces.FLOOR:
-                return (GameObject)Instantiate(Resources.Load("Prefabs/Stage/Floor"));
-
+            GameObject room = (GameObject)Instantiate(Resources.Load("Prefabs/Stage/Room"));
+            Room roomScript = room.GetComponent<Room>();
+            roomScript.CreateRoom(stage[i]);
+            this.rooms.Add(roomScript);
         }
-
-        return null;
     }
+ 
 
-    private void CreateRoom(Vector3 position, Vector2 roomSize)
-    {
-        StagePieces wallPieces = StagePieces.WALL_DOOR;
-        GameObject wallPieceTop = GetStagePiece(wallPieces);
-        GameObject wallPieceBottom = GetStagePiece(wallPieces);
-        GameObject wallPieceLeft = GetStagePiece(wallPieces);
-        GameObject wallPieceRight = GetStagePiece(wallPieces);
-        GameObject floor = GetStagePiece(StagePieces.FLOOR);
 
-        wallPieceTop.transform.position = new Vector3(0.0f, 0.0f, -4.25f);
-        wallPieceTop.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
-        wallPieceBottom.transform.position = new Vector3(0.0f, 0.0f, 4.25f);
-        wallPieceBottom.transform.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
-
-        wallPieceLeft.transform.position = new Vector3(4.25f, 0.0f, 0.0f);
-        wallPieceLeft.transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
-        wallPieceRight.transform.position = new Vector3(-4.25f, 0.0f, 0.0f);
-        wallPieceRight.transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
-
-        floor.transform.position = Vector3.zero;
-
-        dungeonPieces.Add(floor);
-        dungeonPieces.Add(wallPieceTop);
-        dungeonPieces.Add(wallPieceBottom);
-
-        dungeonPieces.Add(wallPieceLeft);
-        dungeonPieces.Add(wallPieceRight);
-    }
 }

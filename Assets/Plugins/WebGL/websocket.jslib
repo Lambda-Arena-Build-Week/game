@@ -34,6 +34,9 @@ var WebSocketJsLib = {
             console.log('[close]');
             window.wsclient.close();
         }
-    }
+    },
+    Chat: function(msg){
+	ReactUnityWebGL.chat(msg);
+    },
 }
 mergeInto(LibraryManager.library, WebSocketJsLib);

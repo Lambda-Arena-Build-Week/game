@@ -21,6 +21,15 @@ public struct Message
     public Color shoesColor;
     public string weapon;
     public float animSpeed;
+    public int spawn;
+}
+
+[Serializable]
+public struct ChatMessage
+{
+    public string message;
+    public string gametag;
+    public string text;
 }
 
  

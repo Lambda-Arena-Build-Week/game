@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     public float destroyTrigger = 30.0f;
     public bool isRagdoll = false;
     public Renderer rend;
-
+    public Vector3 startPoint;
     private Dictionary<string, Material> materials = new Dictionary<string, Material>();
     private Vector3 moveDirection = Vector3.zero;
     private Vector2 resolution;
@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
             this.weapon.transform.rotation = this.weaponMount.rotation;
             this.weapon.transform.parent = this.weaponMount;
         }
-     }
+    }
 
     // Get all the materials in the renderer for use in changing player's colors
     private void GetMaterials()
@@ -79,8 +79,8 @@ public class Player : MonoBehaviour
         this.animator.SetFloat("speed", 0.0f);
         this.animSpeed = 0.0f;
         this.ragdollController.TurnRagdollOff();
-        this.GetMaterials();            
-
+        this.GetMaterials();
+        this.rigid.position = this.startPoint;
         this.ChangeColors();
     }
 
@@ -191,9 +191,9 @@ public class Player : MonoBehaviour
         this.rigid.MovePosition(new Vector3(-10000.0f, -10000.0f, -10000.0f));
     }
 
-    public void Spawn(Vector3 pos)
+    public void Spawn(int pos)
     {
-        this.rigid.MovePosition(pos);
+        this.rigid.MovePosition(new Vector3(Dungeon.instance.stage[pos].x, 0.0f, Dungeon.instance.stage[pos].y) * 9f);
         this.rigid.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         this.health = 100;
         this.capsuleCollider.enabled = true;

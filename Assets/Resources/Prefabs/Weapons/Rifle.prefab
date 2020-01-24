@@ -128,7 +128,7 @@ MonoBehaviour:
   numberOfRounds: 1
   damagePerRound: 10
   fireRate: 0.05
-  spreadAngle: 0
+  spreadAngle: 5
   roundLifetime: 2
   coolDownTime: 0.1
   projectileForce: 10

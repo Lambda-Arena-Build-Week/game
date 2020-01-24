@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 using System.Runtime.InteropServices;
 using WebSocketSharp;
-
+using System;
 
 public class Multiplayer : MonoBehaviour
 {
@@ -17,6 +18,12 @@ public class Multiplayer : MonoBehaviour
 
     [DllImport("__Internal")]
     private static extern int State();
+
+    [DllImport("__Internal")]
+    private static extern void Chat (string msg);
+
+    [DllImport("__Internal")]
+    private static extern void TestChat (string msg);
 #endif
 
 #if !UNITY_WEBGL || UNITY_EDITOR
@@ -32,10 +39,9 @@ public class Multiplayer : MonoBehaviour
     public string currentWeapon = "handgun";
     public AudioSource audioSource;
     public List<AudioClip> audioClips = new List<AudioClip>();
-    
     private List<Message> messageQueue = new List<Message>();
 
-    private void OnEnable()
+    private void Start()
     { 
         if (instance == null)
             instance = this;
@@ -43,6 +49,31 @@ public class Multiplayer : MonoBehaviour
         this.player.isMenu = false;
         this.connected = false;
 
+        StartCoroutine(this.GetStage());
+     
+    }
+
+    private IEnumerator GetStage()
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get("https://lambdamud-2020-staging.herokuapp.com/api/gameworld/"))
+        {
+            yield return request.SendWebRequest();
+
+            while (!request.isDone)
+                yield return null;
+
+            byte[] result = request.downloadHandler.data;
+
+            string json = System.Text.Encoding.Default.GetString(result);
+            Dungeon.instance.stage = JsonHelper.getJsonArray<StagePiece>(json);
+             
+            Dungeon.instance.BuildDungeon();
+            this.CreateWebsocket();
+        }
+    }
+
+    private void CreateWebsocket()
+    {
 #if UNITY_WEBGL && !UNITY_EDITOR
         WebSocketInit("wss://bwgame-node-be.herokuapp.com");
 #endif
@@ -73,10 +104,10 @@ public class Multiplayer : MonoBehaviour
 
         ws.Connect();
 #endif
-
     }
 
-    private void OnApplicationQuit()
+
+        private void OnApplicationQuit()
     {
         Message message = new Message();
         message.message = "playerdisconnect";
@@ -119,7 +150,6 @@ public class Multiplayer : MonoBehaviour
 
     public void ProcessMessages()
     {
-
         for (int i = 0; i < messageQueue.Count; i++)
         {
 
@@ -188,7 +218,6 @@ public class Multiplayer : MonoBehaviour
                         break;
                 }
                    
-                
                 AudioSource.PlayClipAtPoint(audioClips[clip], message.position);
                 this.FireRound(message.shooterid, message.roundLifeTime, message.damagePerRound, message.position, message.rotation, message.force, false);
             }
@@ -198,12 +227,12 @@ public class Multiplayer : MonoBehaviour
                 if (messageQueue[i].id == this.id)
                 {
                     this.player.gameObject.SetActive(true);
-                    this.player.Spawn(messageQueue[i].position);
+                    this.player.Spawn(messageQueue[i].spawn);
                 }
                 else
                 {
                     players[messageQueue[i].id].gameObject.SetActive(true);
-                    players[messageQueue[i].id].Spawn(messageQueue[i].position);
+                    players[messageQueue[i].id].Spawn(messageQueue[i].spawn);
                 }
             }
             else
@@ -235,10 +264,26 @@ public class Multiplayer : MonoBehaviour
         {
             messageQueue.Add(msg);
         }
+        else
+        if (msg.message == "chat")
+        {
 
+            ChatMessage chat = (ChatMessage)JsonUtility.FromJson(message, typeof(ChatMessage));
+#if UNITY_WEBGL && !UNITY_EDITOR
+            Chat(JsonUtility.ToJson(chat));
+#endif
+        }
+        else
+        if (msg.message == "newid")
+        {
+            this.id = msg.id;
+            this.player.id = msg.id;
+            this.player.startPoint = new Vector3(Dungeon.instance.stage[msg.spawn].x, 0.0f, Dungeon.instance.stage[msg.spawn].y) * 9f;
+        }
+        else
         if (msg.id == this.id)
             return;
-
+        else
         if (msg.message == "playerupdate")
         {
             if (players.ContainsKey(msg.id))
@@ -253,16 +298,9 @@ public class Multiplayer : MonoBehaviour
             }
         }
         else
-        if (msg.message == "newid")
-        {
-            this.id = msg.id;
-            this.player.id = msg.id;
-        }
-        else
         {
             messageQueue.Add(msg);
         }
-
     }
 
     public void FireRound(int playerId, float roundLifetime, int damagePerRound, Vector3 position, Quaternion rotation, float force, bool send)
@@ -301,5 +339,12 @@ public class Multiplayer : MonoBehaviour
     public void DisconnectFromGame()
     {
         this.connectToGame = false;
+    }
+
+    public void ChatMessage(string msg)
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        this.Send(JsonUtility.ToJson(msg));
+#endif
     }
 }

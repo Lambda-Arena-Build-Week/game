@@ -217,6 +217,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3181086281660840689, guid: 77fb6d4a4a3e0458da1421a709ba901f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9215182930926608852, guid: 77fb6d4a4a3e0458da1421a709ba901f,
         type: 3}
       propertyPath: m_Shadows.m_Resolution
@@ -330,6 +335,11 @@ PrefabInstance:
     - target: {fileID: 3181086281660840689, guid: 77fb6d4a4a3e0458da1421a709ba901f,
         type: 3}
       propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181086281660840689, guid: 77fb6d4a4a3e0458da1421a709ba901f,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9215182930926608852, guid: 77fb6d4a4a3e0458da1421a709ba901f,
