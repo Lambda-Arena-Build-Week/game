@@ -70,6 +70,7 @@ MonoBehaviour:
   id: 0
   rotationSpeed: 2
   model: 
+  obj: {fileID: 7819727808714370842}
 --- !u!1001 &2280136515548263955
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -159,6 +160,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: b797e9eb49520427da8a4923653a65fe, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 973a3209b3f8243cab8b3196e4e6b116, type: 3}
+--- !u!1 &7819727808714370842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 973a3209b3f8243cab8b3196e4e6b116,
+    type: 3}
+  m_PrefabInstance: {fileID: 2280136515548263955}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6547698232980348169 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 973a3209b3f8243cab8b3196e4e6b116,
