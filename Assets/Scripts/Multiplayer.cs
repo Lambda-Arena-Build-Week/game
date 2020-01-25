@@ -42,15 +42,14 @@ public class Multiplayer : MonoBehaviour
     private List<Message> messageQueue = new List<Message>();
 
     private void Start()
-    { 
+    {
         if (instance == null)
             instance = this;
 
         this.player.isMenu = false;
         this.connected = false;
 
-        StartCoroutine(this.GetStage());
-     
+        StartCoroutine(this.GetStage());     
     }
 
     private IEnumerator GetStage()
@@ -265,15 +264,6 @@ public class Multiplayer : MonoBehaviour
             messageQueue.Add(msg);
         }
         else
-        if (msg.message == "chat")
-        {
-
-            ChatMessage chat = (ChatMessage)JsonUtility.FromJson(message, typeof(ChatMessage));
-#if UNITY_WEBGL && !UNITY_EDITOR
-            Chat(JsonUtility.ToJson(chat));
-#endif
-        }
-        else
         if (msg.message == "newid")
         {
             this.id = msg.id;
@@ -344,7 +334,17 @@ public class Multiplayer : MonoBehaviour
     public void ChatMessage(string msg)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        this.Send(JsonUtility.ToJson(msg));
+      //  this.Send(msg);
+#endif
+    }
+
+    public void CaptureKeyboard(string value)
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        if (value == "0")
+            WebGLInput.captureAllKeyboardInput = false;
+        else
+            WebGLInput.captureAllKeyboardInput = true;
 #endif
     }
 }
