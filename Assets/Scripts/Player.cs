@@ -328,7 +328,7 @@ public class Player : MonoBehaviour
 
         string tag = trigger.gameObject.tag;
 
-        if (tag.Equals("HealthPswack") && this.health < 100)
+        if (tag.Equals("HealthPack") && this.health < 100)
         {
             this.health = 100;
             trigger.gameObject.SetActive(false);
