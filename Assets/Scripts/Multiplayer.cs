@@ -230,14 +230,11 @@ public class Multiplayer : MonoBehaviour
                 }
                 else
                 {
+                    players[messageQueue[i].id].KillPlayer();
+
                     players[messageQueue[i].id].gameObject.SetActive(true);
                     players[messageQueue[i].id].Spawn(messageQueue[i].spawn);
                 }
-            }
-            else
-            if (messageQueue[i].message == "killplayer" && messageQueue[i].id != this.id)
-            {
-                players[messageQueue[i].targetid].KillPlayer();
             }
             else
             if (players.ContainsKey(messageQueue[i].id) && messageQueue[i].message == "switchweapon" && messageQueue[i].id != this.id)
