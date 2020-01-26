@@ -10,10 +10,14 @@ var WebSocketJsLib = {
         }; 
         window.wsclient.onopen = function (evt) {
             SendMessage('Multiplayer', 'OnConnect');
-           console.log("[WebSocket Connected]");
+            console.log("[WebSocket Connected]");
         };
         window.wsclient.onmessage = function(evt) {
-            SendMessage('Multiplayer', 'OnMessage', evt.data);
+            const msg = JSON.parse(evt.data);
+            if (msg.message === 'chat')
+                ReactUnityWebGL.chat(evt.data);
+            else
+                SendMessage('Multiplayer', 'OnMessage', evt.data);
         }; 
         window.wsclient.onerror = function(evt) {
           
@@ -36,7 +40,21 @@ var WebSocketJsLib = {
         }
     },
     Chat: function(msg){
-	ReactUnityWebGL.chat(msg);
+	    
     },
+     hackWebGLKeyboard: function ()
+ {
+     var webGLInput = document.getElementById('outlined-basic');
+     for (var i in JSEvents.eventHandlers)
+     {
+         var event = JSEvents.eventHandlers[i];
+         if (event.eventTypeString == 'keydown' || event.eventTypeString == 'keypress' || event.eventTypeString == 'onChange')
+         {
+             webGLInput.addEventListener(event.eventTypeString, event.eventListenerFunc, event.useCapture);
+             window.removeEventListener(event.eventTypeString, event.eventListenerFunc, event.useCapture);
+         }
+     }
+ },
+    
 }
 mergeInto(LibraryManager.library, WebSocketJsLib);

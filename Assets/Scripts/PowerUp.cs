@@ -11,7 +11,7 @@ public class PowerUp : MonoBehaviour
 
     private void Update()
     {
-        this.obj.transform.Rotate(new Vector3(0.0f,0.0f, this.rotationSpeed));
+        this.obj.transform.Rotate(new Vector3(0.0f, 0.0f, this.rotationSpeed));
     }
 }
 

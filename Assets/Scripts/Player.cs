@@ -74,13 +74,25 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         this.floorLayer = LayerMask.GetMask("Floor");
-        this.capsuleCollider.enabled = true;
-        this.animator.enabled = true;
-        this.animator.SetFloat("speed", 0.0f);
+
+        if (!this.isRagdoll)
+        {
+            this.animator.enabled = true;
+            this.rigid.position = this.startPoint;
+            this.ragdollController.TurnRagdollOff();
+            this.capsuleCollider.enabled = true;
+
+        }
+        else
+        {
+            this.animator.enabled = false;
+            this.capsuleCollider.enabled = false;
+        }
+
         this.animSpeed = 0.0f;
-        this.ragdollController.TurnRagdollOff();
+   
         this.GetMaterials();
-        this.rigid.position = this.startPoint;
+       
         this.ChangeColors();
     }
 
@@ -178,22 +190,31 @@ public class Player : MonoBehaviour
         this.weaponScript.Fire(false);
         this.health = 0;
 
-        GameObject ragdoll = Instantiate(this.gameObject);
+        this.isRagdoll = true;
+        GameObject ragdoll = Instantiate(this.gameObject, this.rigid.position, this.rigid.rotation);
         Player script = ragdoll.GetComponent<Player>();
         script.isRagdoll = true;
-        
-        Vector3 pos = script.rigid.position;
-        pos.y += 0.1f;
-        script.rigid.position = pos;
+        script.hairColor = this.hairColor;
+        script.pantsColor = this.pantsColor;
+        script.shirtColor = this.shirtColor;
+        script.shoesColor = this.shoesColor;
+        script.skinColor = this.skinColor;
+        script.ChangeColors();
         script.capsuleCollider.enabled = false;
         script.health = 0;
         script.animator.enabled = false;
+        script.position = this.position;
+        script.rotation = this.rotation;
+
+        this.isRagdoll = false;
+
         this.rigid.MovePosition(new Vector3(-10000.0f, -10000.0f, -10000.0f));
     }
 
     public void Spawn(int pos)
     {
-        this.rigid.MovePosition(new Vector3(Dungeon.instance.stage[pos].x, 0.0f, Dungeon.instance.stage[pos].y) * 9f);
+      
+        this.rigid.MovePosition(new Vector3(-Dungeon.instance.stage[pos].x, 0.0f, -Dungeon.instance.stage[pos].y) * 9f);
         this.rigid.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         this.health = 100;
         this.capsuleCollider.enabled = true;
@@ -339,6 +360,7 @@ public class Player : MonoBehaviour
                     message.targetid = this.id;
                     message.shooterid = projectile.playerId;
                     this.dead = true;
+            
                     Multiplayer.instance.Send(JsonUtility.ToJson(message));      
                 }
             }

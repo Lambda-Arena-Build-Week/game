@@ -42,15 +42,14 @@ public class Multiplayer : MonoBehaviour
     private List<Message> messageQueue = new List<Message>();
 
     private void Start()
-    { 
+    {
         if (instance == null)
             instance = this;
 
         this.player.isMenu = false;
         this.connected = false;
 
-        StartCoroutine(this.GetStage());
-     
+        StartCoroutine(this.GetStage());     
     }
 
     private IEnumerator GetStage()
@@ -231,14 +230,11 @@ public class Multiplayer : MonoBehaviour
                 }
                 else
                 {
+                    players[messageQueue[i].id].KillPlayer();
+
                     players[messageQueue[i].id].gameObject.SetActive(true);
                     players[messageQueue[i].id].Spawn(messageQueue[i].spawn);
                 }
-            }
-            else
-            if (messageQueue[i].message == "killplayer" && messageQueue[i].id != this.id)
-            {
-                players[messageQueue[i].targetid].KillPlayer();
             }
             else
             if (players.ContainsKey(messageQueue[i].id) && messageQueue[i].message == "switchweapon" && messageQueue[i].id != this.id)
@@ -263,15 +259,6 @@ public class Multiplayer : MonoBehaviour
         if (msg.message == "respawn")
         {
             messageQueue.Add(msg);
-        }
-        else
-        if (msg.message == "chat")
-        {
-
-            ChatMessage chat = (ChatMessage)JsonUtility.FromJson(message, typeof(ChatMessage));
-#if UNITY_WEBGL && !UNITY_EDITOR
-            Chat(JsonUtility.ToJson(chat));
-#endif
         }
         else
         if (msg.message == "newid")
@@ -344,7 +331,17 @@ public class Multiplayer : MonoBehaviour
     public void ChatMessage(string msg)
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        this.Send(JsonUtility.ToJson(msg));
+      //  this.Send(msg);
+#endif
+    }
+
+    public void CaptureKeyboard(string value)
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        if (value == "0")
+            WebGLInput.captureAllKeyboardInput = false;
+        else
+            WebGLInput.captureAllKeyboardInput = true;
 #endif
     }
 }
