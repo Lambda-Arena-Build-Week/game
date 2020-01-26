@@ -20,10 +20,10 @@ public class Multiplayer : MonoBehaviour
     private static extern int State();
 
     [DllImport("__Internal")]
-    private static extern void Chat (string msg);
+    private static extern void SetMapPosX(int message);
 
     [DllImport("__Internal")]
-    private static extern void TestChat (string msg);
+    private static extern void SetMapPosY(int message);
 #endif
 
 #if !UNITY_WEBGL || UNITY_EDITOR
@@ -40,6 +40,7 @@ public class Multiplayer : MonoBehaviour
     public AudioSource audioSource;
     public List<AudioClip> audioClips = new List<AudioClip>();
     private List<Message> messageQueue = new List<Message>();
+    private Vector2 currentMapPos = new Vector2(10000.0f, 10000.0f);
 
     private void Start()
     {
@@ -133,6 +134,17 @@ public class Multiplayer : MonoBehaviour
         string json = JsonUtility.ToJson(message);
 
         this.Send(json);
+
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        Vector2 pos =  new Vector2(Mathf.CeilToInt((player.transform.position.x / 9.0f) - 0.5f), Mathf.CeilToInt((player.transform.position.z / 9.0f) - 0.5f));
+        if (currentMapPos != pos)
+        {
+            currentMapPos = pos;
+            SetMapPosX( (int)(pos.x) );
+            SetMapPosY( (int)(pos.y) );
+        }
+#endif
     }
 
     public void Send(string data)

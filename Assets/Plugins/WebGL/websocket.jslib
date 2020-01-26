@@ -1,4 +1,3 @@
- 
 var WebSocketJsLib = {
  
         WebSocketInit: function(url){
@@ -39,22 +38,12 @@ var WebSocketJsLib = {
             window.wsclient.close();
         }
     },
-    Chat: function(msg){
-	    
+    SetMapPosX : function(msg){
+      ReactUnityWebGL.updatemapx(msg);
     },
-     hackWebGLKeyboard: function ()
- {
-     var webGLInput = document.getElementById('outlined-basic');
-     for (var i in JSEvents.eventHandlers)
-     {
-         var event = JSEvents.eventHandlers[i];
-         if (event.eventTypeString == 'keydown' || event.eventTypeString == 'keypress' || event.eventTypeString == 'onChange')
-         {
-             webGLInput.addEventListener(event.eventTypeString, event.eventListenerFunc, event.useCapture);
-             window.removeEventListener(event.eventTypeString, event.eventListenerFunc, event.useCapture);
-         }
-     }
- },
+    SetMapPosY : function(msg){
+      ReactUnityWebGL.updatemapy(msg);
+    },
     
 }
 mergeInto(LibraryManager.library, WebSocketJsLib);

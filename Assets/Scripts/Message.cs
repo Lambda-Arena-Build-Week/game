@@ -32,4 +32,8 @@ public struct ChatMessage
     public string text;
 }
 
- 
+[Serializable]
+public struct MapPosition
+{
+    public Vector2 active_room;
+}

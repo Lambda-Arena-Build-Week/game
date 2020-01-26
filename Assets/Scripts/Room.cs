@@ -99,8 +99,8 @@ public class Room : MonoBehaviour
         dungeonPieces.Add(wallPieceLeft);
         dungeonPieces.Add(wallPieceRight);
 
-        this.gameObject.transform.position = new Vector3(-stagePiece.x, 0.0f, -stagePiece.y) * 9f;
-
+        this.gameObject.transform.position = new Vector3(stagePiece.x, 0.0f,stagePiece.y) * 9f;
+        this.gameObject.transform.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
         this.SpawnItem(stagePiece);
     }
 }
