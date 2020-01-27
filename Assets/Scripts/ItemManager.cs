@@ -34,7 +34,7 @@ public class ItemManager : MonoBehaviour
     {
         this.respawnTimer += Time.deltaTime;
 
-        if (this.respawnTimer >= this.respawnRate)
+        if (this.respawnTimer >= this.respawnRate * 60.0f)
         {
             this.respawnTimer = 0.0f;
             this.EnableItems();
