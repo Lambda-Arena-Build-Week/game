@@ -75,11 +75,11 @@ public class Multiplayer : MonoBehaviour
     private void CreateWebsocket()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        WebSocketInit("wss://bwgame-node-be.herokuapp.com");
+        WebSocketInit("wss://lambdamud-node-be.herokuapp.com");
 #endif
 
 #if !UNITY_WEBGL || UNITY_EDITOR
-        ws = new WebSocket("wss://bwgame-node-be.herokuapp.com");
+        ws = new WebSocket("wss://lambdamud-node-be.herokuapp.com");
 
         ws.OnOpen += (sender, e) =>
         {

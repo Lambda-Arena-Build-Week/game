@@ -9,6 +9,11 @@ public class PowerUp : MonoBehaviour
     public string model;
     public GameObject obj;
 
+    private void Start()
+    {
+        ItemManager.instance.AddItem(this.gameObject);    
+    }
+
     private void Update()
     {
         this.obj.transform.Rotate(new Vector3(0.0f, 0.0f, this.rotationSpeed));
