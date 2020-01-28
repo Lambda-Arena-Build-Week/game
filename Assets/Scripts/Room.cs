@@ -44,19 +44,19 @@ public class Room : MonoBehaviour
                         item = ((GameObject)Instantiate(Resources.Load("Prefabs/PowerUps/HealthPack")));
                         item.transform.parent = this.transform;
                         item.transform.position = Vector3.zero;
-                        item.transform.localPosition = new Vector3(3.5f, 0.0f, 3.5f)  ;
+                        item.transform.localPosition = new Vector3(-3.5f, 0.0f, -3.5f)  ;
                         break;
                     case 2:
                         item = ((GameObject)Instantiate(Resources.Load("Prefabs/PowerUps/ShotgunPowerUp")));
                         item.transform.parent = this.transform;
                         item.transform.position = Vector3.zero;
-                        item.transform.localPosition = new Vector3(3.5f, 0.0f, 3.5f);
+                        item.transform.localPosition = new Vector3(-3.5f, 0.0f, -3.5f);
                         break;
                     case 3:
                         item = ((GameObject)Instantiate(Resources.Load("Prefabs/PowerUps/RiflePowerUp")));
                         item.transform.position = Vector3.zero;
                         item.transform.parent = this.transform;
-                        item.transform.localPosition = new Vector3(3.5f, 0.0f, 3.5f) ;
+                        item.transform.localPosition = new Vector3(-3.5f, 0.0f, -3.5f) ;
                         break;
 
                 }
@@ -99,8 +99,8 @@ public class Room : MonoBehaviour
         dungeonPieces.Add(wallPieceLeft);
         dungeonPieces.Add(wallPieceRight);
 
-        this.gameObject.transform.position = new Vector3(-stagePiece.x, 0.0f, -stagePiece.y) * 9f;
-
+        this.gameObject.transform.position = new Vector3(stagePiece.x, 0.0f,stagePiece.y) * 9f;
+        this.gameObject.transform.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
         this.SpawnItem(stagePiece);
     }
 }

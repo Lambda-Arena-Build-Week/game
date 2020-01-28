@@ -34,6 +34,7 @@ public class Dungeon : MonoBehaviour
             GameObject room = (GameObject)Instantiate(Resources.Load("Prefabs/Stage/Room"));
             Room roomScript = room.GetComponent<Room>();
             roomScript.CreateRoom(stage[i]);
+            room.transform.parent = this.transform;
             this.rooms.Add(roomScript);
         }
     }

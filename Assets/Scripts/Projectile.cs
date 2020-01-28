@@ -24,6 +24,7 @@ public class Projectile : MonoBehaviour
 
         this.lifetimeTimer = 0.0f;
 
+
         this.gameObject.SetActive(false);
     }
 
@@ -40,6 +41,9 @@ public class Projectile : MonoBehaviour
         Player player = collision.gameObject.GetComponent<Player>();
 
         if (player == null)
+        {
+            AssetManager.instance.CreateImpact(collision.contacts[0].point, this.rigid.transform.forward);
             this.DisableProjectile();
+        }
     }
 }

@@ -214,13 +214,15 @@ public class Player : MonoBehaviour
     public void Spawn(int pos)
     {
       
-        this.rigid.MovePosition(new Vector3(-Dungeon.instance.stage[pos].x, 0.0f, -Dungeon.instance.stage[pos].y) * 9f);
+        this.rigid.MovePosition(new Vector3(Dungeon.instance.stage[pos].x, 0.0f, Dungeon.instance.stage[pos].y) * 9f);
         this.rigid.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
         this.health = 100;
         this.capsuleCollider.enabled = true;
         this.dead = false;
         this.animator.enabled = true;
         this.ragdollController.TurnRagdollOff();
+
+        this.SwitchWeapon("Handgun");
     }
 
     public void Update()
@@ -326,7 +328,7 @@ public class Player : MonoBehaviour
 
         string tag = trigger.gameObject.tag;
 
-        if (tag.Equals("HealthPswack") && this.health < 100)
+        if (tag.Equals("HealthPack") && this.health < 100)
         {
             this.health = 100;
             trigger.gameObject.SetActive(false);
@@ -347,7 +349,7 @@ public class Player : MonoBehaviour
         if (projectile != null)
         {
             projectile.DisableProjectile();
-
+            AssetManager.instance.CreateBloodImpact(collision.contacts[0].point, collision.contacts[0].normal);
             if (this.isControlled)
             { 
                 this.health -= projectile.damageDone;
